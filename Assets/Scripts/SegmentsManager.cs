@@ -9,33 +9,31 @@ public class SegmentsManager : MonoBehaviour
 
     [SerializeField] private GameObject head;
     [SerializeField] private GameObject segmentPrefab;
-    private List<GameObject> segments;
     private List<ConfigurableJoint> joints;
 
     public List<float> jointAngles;
 
     void Start() {
-        segments = new List<GameObject>();
         joints = new List<ConfigurableJoint>();
         jointAngles = new List<float>();
+
+        Transform frontBack = head.transform.Find("Back");
 
         for (int i = 0; i < segmentNum; ++i) {
             GameObject segment = Instantiate(segmentPrefab, this.transform);
             segment.name = "Segment" + (i+1).ToString("d2");
 
-            segment.transform.localPosition = (float)(i + 1) * segmentDist * Vector3.back;
+            segment.transform.localPosition = (float)i * segmentDist * Vector3.back;
 
-            var joint = segment.transform.Find("Back").GetComponent<ConfigurableJoint>();
-            GameObject frontObj;
-            if (i == 0)
-                frontObj = head;
-            else
-                frontObj = segments[i - 1];
-            joint.connectedBody = frontObj.transform.Find("Back").GetComponent<Rigidbody>();
+            Transform back = segment.transform.Find("Back");
+            var joint = back.GetComponent<ConfigurableJoint>();
 
-            segments.Add(segment);
+            Physics.IgnoreCollision(frontBack.GetComponentInChildren<Collider>(), back.GetComponentInChildren<Collider>());
+            joint.connectedBody = frontBack.GetComponent<Rigidbody>();
+
             joints.Add(joint);
             jointAngles.Add(0f);
+            frontBack = back;
         }
     }
 
