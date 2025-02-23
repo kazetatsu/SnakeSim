@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class Vis : MonoBehaviour
 {
-    SegmentsManager _manager;
+    MiddleManager _manager;
     List<Material> _materials;
     int jointCount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _manager = GetComponent<SegmentsManager>();
+        _manager = GetComponent<MiddleManager>();
         _materials = new List<Material>();
-        jointCount = _manager.MiddlesCount;
+        jointCount = _manager.SegmentsCount;
 
         for (int i = 1; i <= jointCount; ++i) {
             Transform child = this.transform.Find("Middle" + i.ToString("d2"));
@@ -31,7 +31,7 @@ public class Vis : MonoBehaviour
     void Update()
     {
         for (int i = 0; i < jointCount; ++i) {
-            float ang = _manager.middleJointAngles[i];
+            float ang = _manager.jointAngles[i];
             ang /=60f;
             if (ang < 0f)  ang = -ang;
             if (ang >= 1f) ang = 1f;

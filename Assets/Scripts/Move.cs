@@ -4,9 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Move : MonoBehaviour
 {
-    SegmentsManager _manager;
+    MiddleManager _manager;
     InputAction _action;
     int jointsCount;
     float firstJointAng = 0f;
@@ -17,9 +17,9 @@ public class Player : MonoBehaviour
     [SerializeField, Range(1,32)] int qCapacity;
 
     void Start() {
-        _manager = this.GetComponent<SegmentsManager>();
+        _manager = this.GetComponent<MiddleManager>();
         _action = InputSystem.actions.FindAction("Move");
-        jointsCount = _manager.MiddlesCount; // SegmentsManager.Start() must called before this line.
+        jointsCount = _manager.SegmentsCount; // SegmentsManager.Start() must called before this line.
 
         jointAngleQs = new List<Queue<float>>();
         for (int i = 1; i < jointsCount; ++i) {
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
                 firstJointAng = -angLimit;
             else if (firstJointAng > angLimit)
                 firstJointAng = angLimit;
-            _manager.middleJointAngles[0] = firstJointAng;
+            _manager.jointAngles[0] = firstJointAng;
 
             float futureAng = firstJointAng;
             for (int i = 1; i < jointsCount; ++i) {
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
                 float currentAng = q.Dequeue();
                 q.Enqueue(futureAng);
 
-                _manager.middleJointAngles[i] = currentAng;
+                _manager.jointAngles[i] = currentAng;
                 futureAng = currentAng;
             }
         }

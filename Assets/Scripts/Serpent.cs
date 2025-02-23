@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Serpent : MonoBehaviour
 {
-    private SegmentsManager manager;
+    private MiddleManager manager;
     private int segmentNum;
     private float t = 0f;
     [SerializeField] private float coefT;
@@ -10,8 +10,8 @@ public class Serpent : MonoBehaviour
     [SerializeField] private float coefSin;
 
     void Start() {
-        manager = GetComponent<SegmentsManager>();
-        segmentNum = manager.MiddlesCount;
+        manager = GetComponent<MiddleManager>();
+        segmentNum = manager.SegmentsCount;
     }
 
 
@@ -20,7 +20,7 @@ public class Serpent : MonoBehaviour
 
         for (int i = 0; i < segmentNum; ++i) {
             float x = coefT * t + coefI * (float)i;
-            manager.middleJointAngles[i] = coefSin * Mathf.Sin(x);
+            manager.jointAngles[i] = coefSin * Mathf.Sin(x);
         }
     }
 }
