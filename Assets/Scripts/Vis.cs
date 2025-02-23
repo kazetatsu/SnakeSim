@@ -14,7 +14,7 @@ public class Vis : MonoBehaviour
         _materials = new List<Material>();
         jointCount = _manager.SegmentsCount;
 
-        for (int i = 1; i <= jointCount; ++i) {
+        for (int i = 0; i < jointCount; ++i) {
             Transform child = this.transform.Find("Middle" + i.ToString("d2"));
 
             _materials.Add(

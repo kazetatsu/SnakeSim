@@ -22,7 +22,7 @@ public class MiddleManager : MonoBehaviour
 
         for (int i = 0; i < segmentsCount; ++i) {
             GameObject segment = Instantiate(segmentPrefab, this.transform);
-            segment.name = "Middle" + (i+1).ToString("d2");
+            segment.name = "Middle" + i.ToString("d2");
 
             segment.transform.localPosition = (float)i * segmentsDist * Vector3.back;
 
@@ -34,8 +34,8 @@ public class MiddleManager : MonoBehaviour
             joint.connectedBody = frontBack.GetComponent<Rigidbody>();
 
             float coefSpring = 1f - (float)i / (float)(segmentsCount - 1);
-            coefSpring *= 0.9f;
-            coefSpring += 0.1f;
+            coefSpring *= 0.5f;
+            coefSpring += 0.5f;
             var _drive = new JointDrive();
             _drive.positionSpring = 100f * coefSpring;
             _drive.maximumForce = 1000f;
