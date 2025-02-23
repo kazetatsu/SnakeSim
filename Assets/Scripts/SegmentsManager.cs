@@ -1,44 +1,66 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SegmentsManager : MonoBehaviour
 {
-    [SerializeField, Range(0, 32)] private int segmentNum;
-    public int SegmentNum {get=>segmentNum;}
-    [SerializeField, Range(0f, 10f)] private float segmentDist;
-
     [SerializeField] private GameObject head;
-    [SerializeField] private GameObject segmentPrefab;
-    private List<ConfigurableJoint> joints;
-
-    public List<float> jointAngles;
+    [SerializeField] private GameObject middlePrefab;
+    [SerializeField, Range(1, 32)] private int middlesCount;
+    public int MiddlesCount { get => middlesCount; }
+    [SerializeField, Range(0f, 10f)] private float middleDist;
+    private List<ConfigurableJoint> middleJoints;
+    public List<float> middleJointAngles;
+    [SerializeField] float angLimit;
+    [SerializeField] float coefLift;
 
     void Start() {
-        joints = new List<ConfigurableJoint>();
-        jointAngles = new List<float>();
+        middleJoints = new List<ConfigurableJoint>();
+        middleJointAngles = new List<float>();
 
         Transform frontBack = head.transform.Find("Back");
 
-        for (int i = 0; i < segmentNum; ++i) {
-            GameObject segment = Instantiate(segmentPrefab, this.transform);
-            segment.name = "Segment" + (i+1).ToString("d2");
+        for (int i = 0; i < middlesCount; ++i) {
+            GameObject segment = Instantiate(middlePrefab, this.transform);
+            segment.name = "Middle" + (i+1).ToString("d2");
 
-            segment.transform.localPosition = (float)i * segmentDist * Vector3.back;
+            segment.transform.localPosition = (float)i * middleDist * Vector3.back;
 
             Transform back = segment.transform.Find("Back");
             var joint = back.GetComponent<ConfigurableJoint>();
 
             Physics.IgnoreCollision(frontBack.GetComponentInChildren<Collider>(), back.GetComponentInChildren<Collider>());
+
             joint.connectedBody = frontBack.GetComponent<Rigidbody>();
 
-            joints.Add(joint);
-            jointAngles.Add(0f);
+            float coefSpring = 1f - (float)i / (float)(middlesCount - 1);
+            coefSpring *= 0.9f;
+            coefSpring += 0.1f;
+            var _drive = new JointDrive();
+            _drive.positionSpring = 100f * coefSpring;
+            _drive.maximumForce = 1000f;
+            joint.angularXDrive = _drive;
+            _drive = new JointDrive();
+            _drive.positionSpring = 30f * coefSpring;
+            _drive.maximumForce = 300f;
+            joint.angularYZDrive = _drive;
+
+            middleJoints.Add(joint);
+            middleJointAngles.Add(0f);
             frontBack = back;
         }
     }
 
-    void Update() {
-        for (int i = 0; i < segmentNum; ++i)
-            joints[i].targetRotation = Quaternion.Euler(jointAngles[i], 0f, 0f);
+    void FixedUpdate() {
+        for (int i = 0; i < middlesCount; ++i) {
+            float ang = middleJointAngles[i];
+            if (ang < -angLimit)
+                ang = -angLimit;
+            else if (ang > angLimit)
+                ang = angLimit;
+
+            var rot = Quaternion.Euler(ang, coefLift * (angLimit - Mathf.Abs(ang)), 0f);
+            middleJoints[i].targetRotation = rot;
+        }
     }
 }

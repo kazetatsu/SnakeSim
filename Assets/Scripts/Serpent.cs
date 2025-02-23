@@ -11,7 +11,7 @@ public class Serpent : MonoBehaviour
 
     void Start() {
         manager = GetComponent<SegmentsManager>();
-        segmentNum = manager.SegmentNum;
+        segmentNum = manager.MiddlesCount;
     }
 
 
@@ -20,7 +20,7 @@ public class Serpent : MonoBehaviour
 
         for (int i = 0; i < segmentNum; ++i) {
             float x = coefT * t + coefI * (float)i;
-            manager.jointAngles[i] = coefSin * Mathf.Sin(x);
+            manager.middleJointAngles[i] = coefSin * Mathf.Sin(x);
         }
     }
 }
