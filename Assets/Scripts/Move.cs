@@ -16,6 +16,8 @@ public class Move : MonoBehaviour
     List<Queue<float>> jointAngleQs;
     [SerializeField, Range(1,32)] int qCapacity;
 
+    private Vector2 currentInput;
+
     void Start() {
         _manager = this.GetComponent<MiddleManager>();
         _action = InputSystem.actions.FindAction("Move");
@@ -32,14 +34,25 @@ public class Move : MonoBehaviour
 
 
     void Update() {
-        var currentInput = _action.ReadValue<Vector2>();
+        currentInput = _action.ReadValue<Vector2>();
+    }
 
-        if (currentInput.y > 0.5f) {
-            firstJointAng += currentInput.x * angSpeed * Time.deltaTime;
-            if (firstJointAng < -angLimit)
-                firstJointAng = -angLimit;
-            else if (firstJointAng > angLimit)
-                firstJointAng = angLimit;
+    void FixedUpdate() {
+        if (currentInput.y > 0.1f) {
+            // Calcurate target angle of 1st middle segmen.
+            if (-0.5f < currentInput.x && currentInput.x < 0.5f) {
+                float sign = Mathf.Sign(firstJointAng);
+                firstJointAng -= sign * angSpeed * Time.fixedDeltaTime;
+                if (sign * firstJointAng < 0f)
+                    firstJointAng = 0f;
+            } else {
+                firstJointAng += Mathf.Sign(currentInput.x) * angSpeed * Time.fixedDeltaTime;
+                if (firstJointAng < -angLimit)
+                    firstJointAng = -angLimit;
+                else if (firstJointAng > angLimit)
+                    firstJointAng = angLimit;
+            }
+
             _manager.jointAngles[0] = firstJointAng;
 
             float futureAng = firstJointAng;
