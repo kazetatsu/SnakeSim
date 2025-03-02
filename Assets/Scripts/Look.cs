@@ -3,9 +3,12 @@ using UnityEngine.InputSystem;
 
 public class Look : MonoBehaviour
 {
+    const int LookJointsCount = 3;
+    const float InvCount = 1f / (float)LookJointsCount;
+
     InputAction _actionPad;
     InputAction _actionMouse;
-    HeadManager _manager;
+    JointsManager _manager;
     float angLift = 0f;
     [SerializeField] float angLiftLimit; 
     [SerializeField] float angLiftSpeed;
@@ -20,7 +23,8 @@ public class Look : MonoBehaviour
     void Start() {
         _actionPad   = InputSystem.actions.FindAction("LookPad");
         _actionMouse = InputSystem.actions.FindAction("LookMouse");
-        _manager = this.transform.GetComponent<HeadManager>();
+        _manager = this.transform.GetComponent<JointsManager>();
+        enabled = false;
     }
 
     void Update() {
@@ -48,7 +52,9 @@ public class Look : MonoBehaviour
             else if (angYaw < -angYawLimit) angYaw = -angYawLimit;
         }
 
-        _manager.angLift = angLift;
-        _manager.angYaw  = angYaw;
+
+        var rot = Quaternion.Euler(angYaw * InvCount, angLift * InvCount, 0f);
+        for (int i = 0; i < LookJointsCount; ++i)
+            _manager.targetRotations[i] = rot;
     }
 }
