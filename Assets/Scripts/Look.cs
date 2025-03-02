@@ -20,11 +20,21 @@ public class Look : MonoBehaviour
     [SerializeField] float sensitivityPad;
     [SerializeField] float sensitivityMouse;
 
+    public void Activate() {
+        enabled = true;
+    }
+
+    public void Deactivate() {
+        angLift = 0f;
+        angYaw = 0f;
+        enabled = false;
+    }
+
     void Start() {
         _actionPad   = InputSystem.actions.FindAction("LookPad");
         _actionMouse = InputSystem.actions.FindAction("LookMouse");
         _manager = this.transform.GetComponent<JointsManager>();
-        enabled = false;
+        Deactivate();
     }
 
     void Update() {

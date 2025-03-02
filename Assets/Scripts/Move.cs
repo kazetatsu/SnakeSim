@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
-    public bool isEnabled;
-
     JointsManager _manager;
     InputAction _action;
     float firstJointAng = 0f;
@@ -20,6 +18,20 @@ public class Move : MonoBehaviour
 
     private Vector2 currentInput;
 
+    HingeJoint[] bellyJoints;
+
+    public void Activate() {
+        foreach (HingeJoint belly in bellyJoints)
+            belly.useMotor = false;
+        enabled = true;
+    }
+
+    public void Deactivate() {
+        foreach (HingeJoint belly in bellyJoints)
+            belly.useMotor = true;
+        enabled = false;
+    }
+
     void Start() {
         _manager = this.GetComponent<JointsManager>();
         _action = InputSystem.actions.FindAction("Move");
@@ -31,50 +43,60 @@ public class Move : MonoBehaviour
                 q.Enqueue(0f);
             jointAngleQs.Add(q);
         }
+
+        var _joints = new List<HingeJoint>();
+        for (int i = 0; i < this.transform.childCount; ++i) {
+            _joints.Add(
+                this.transform
+                .GetChild(i)
+                .Find("Belly")
+                .GetComponent<HingeJoint>()
+            );
+        }
+        bellyJoints = _joints.ToArray();
+
+        Deactivate();
     }
 
 
     void Update() {
-        if (isEnabled)
-            currentInput = _action.ReadValue<Vector2>();
+        currentInput = _action.ReadValue<Vector2>();
     }
 
 
     void FixedUpdate() {
-        if (isEnabled) {
-            // Calcurate target angle of 2nd joint
-            if (-0.5f < currentInput.x && currentInput.x < 0.5f) {
-                float sign = Mathf.Sign(firstJointAng);
-                firstJointAng -= sign * angSpeed * Time.fixedDeltaTime;
-                if (sign * firstJointAng < 0f)
-                    firstJointAng = 0f;
-            } else {
-                firstJointAng += Mathf.Sign(currentInput.x) * angSpeed * Time.fixedDeltaTime;
-                if (firstJointAng < -angLimit)
-                    firstJointAng = -angLimit;
-                else if (firstJointAng > angLimit)
-                    firstJointAng = angLimit;
-            }
+        // Calcurate target angle of 2nd joint
+        if (-0.5f < currentInput.x && currentInput.x < 0.5f) {
+            float sign = Mathf.Sign(firstJointAng);
+            firstJointAng -= sign * angSpeed * Time.fixedDeltaTime;
+            if (sign * firstJointAng < 0f)
+                firstJointAng = 0f;
+        } else {
+            firstJointAng += Mathf.Sign(currentInput.x) * angSpeed * Time.fixedDeltaTime;
+            if (firstJointAng < -angLimit)
+                firstJointAng = -angLimit;
+            else if (firstJointAng > angLimit)
+                firstJointAng = angLimit;
+        }
 
-            _manager.targetRotations[1] = Quaternion.Euler(
-                firstJointAng,
-                coefLift * Mathf.Abs(firstJointAng),
+        _manager.targetRotations[1] = Quaternion.Euler(
+            firstJointAng,
+            coefLift * Mathf.Abs(firstJointAng),
+            0f
+        );
+
+        float futureAng = firstJointAng;
+        for (int i = 2; i < _manager.JointsCount; ++i) {
+            Queue<float> q = jointAngleQs[i - 1];
+            float currentAng = q.Dequeue();
+            q.Enqueue(futureAng);
+
+            _manager.targetRotations[i] = Quaternion.Euler(
+                currentAng,
+                coefLift * Mathf.Abs(currentAng),
                 0f
             );
-
-            float futureAng = firstJointAng;
-            for (int i = 2; i < _manager.JointsCount; ++i) {
-                Queue<float> q = jointAngleQs[i - 1];
-                float currentAng = q.Dequeue();
-                q.Enqueue(futureAng);
-
-                _manager.targetRotations[i] = Quaternion.Euler(
-                    currentAng,
-                    coefLift * Mathf.Abs(currentAng),
-                    0f
-                );
-                futureAng = currentAng;
-            }
+            futureAng = currentAng;
         }
     }
 }
