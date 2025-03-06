@@ -20,6 +20,9 @@ public class Move : MonoBehaviour
 
     HingeJoint[] bellyJoints;
 
+    Transform secondSegment;
+    [SerializeField] Transform _camera;
+
     public void Activate() {
         foreach (HingeJoint belly in bellyJoints)
             belly.useMotor = false;
@@ -54,6 +57,8 @@ public class Move : MonoBehaviour
             );
         }
         bellyJoints = _joints.ToArray();
+
+        secondSegment = this.transform.GetChild(1).Find("Back");
 
         Deactivate();
     }
@@ -97,6 +102,15 @@ public class Move : MonoBehaviour
                 0f
             );
             futureAng = currentAng;
+        }
+
+        Vector3 toDirection = _camera.forward;
+        toDirection -= Vector3.Dot(_camera.forward, secondSegment.up) * secondSegment.up;
+        toDirection = toDirection.normalized;
+        if (toDirection.magnitude > Mathf.Epsilon) {
+            Debug.Log(Vector3.Dot(toDirection, secondSegment.right));
+            float radX = Mathf.Asin(Vector3.Dot(toDirection, secondSegment.right));
+            _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
         }
     }
 }
