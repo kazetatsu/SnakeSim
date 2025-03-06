@@ -108,7 +108,6 @@ public class Move : MonoBehaviour
         toDirection -= Vector3.Dot(_camera.forward, secondSegment.up) * secondSegment.up;
         toDirection = toDirection.normalized;
         if (toDirection.magnitude > Mathf.Epsilon) {
-            Debug.Log(Vector3.Dot(toDirection, secondSegment.right));
             float radX = Mathf.Asin(Vector3.Dot(toDirection, secondSegment.right));
             _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
         }
