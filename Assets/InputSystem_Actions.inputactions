@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "NeedMove",
+                    "type": "Button",
+                    "id": "fc64d952-bd2a-4fdb-97f2-7fd82d89e812",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -521,6 +530,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "LookMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6dcae0b8-8fff-4089-a656-74d4efc0a899",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "NeedMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
