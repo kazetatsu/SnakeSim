@@ -5,137 +5,145 @@ using UnityEngine.SocialPlatforms.GameCenter;
 public class Skin : MonoBehaviour
 {
     Mesh _mesh;
-    const int vertCount = 9;
-    const int LoopCut = 3;
-    float[] xs;
-    float[] ys;
-    Vector3[] verts;
 
-    Transform[] backs;
     [SerializeField] float dist;
     [SerializeField] float radius;
     int segmentsCount;
 
-    void Start() {
-        _mesh = new Mesh();
-        this.GetComponent<MeshFilter>().mesh = _mesh;
+    [SerializeField] Transform physicalBody;
+    Transform[] backs;
 
-        segmentsCount = this.transform.childCount;
-        backs = new Transform[segmentsCount];
-        for (int i = 0; i < segmentsCount; ++i)
-            backs[i] = this.transform.GetChild(i).Find("Back");
+    int vertsCount;
+    Vector3[][] localFVerts; // forward vertices
+    int[][] localFVertIndexs;
+    Vector3[][] localBVerts; // backward vertices
+    int[][] localBVertIndexs;
 
-        xs = new float[vertCount];
-        ys = new float[vertCount];
-        for (int i = 0; i < vertCount; ++i) {
-            float theta = 2f * Mathf.PI * (float)i / (float)vertCount;
-            ys[i] = radius * Mathf.Cos(theta);
-            xs[i] = radius * Mathf.Sin(theta);
-        }
-        verts = new Vector3[vertCount * (LoopCut * segmentsCount + 1)];
-        for (int i = 0; i < vertCount; ++i) {
-            var vert = new Vector3(xs[i], ys[i], 0f);
-            for (int j = 0; j < segmentsCount; ++j) {
-                int offset = (LoopCut*vertCount)*j + i;
 
-                vert.z = - (float)j * dist + 0.5f * dist;
-                verts[offset              ] = vert;
-                vert.z -= 0.2f * dist;
-                verts[offset + vertCount  ] = vert;
-                vert.z -= 0.6f * dist;
-                verts[offset + vertCount*2] = vert;
+    class SlerpHelper {
+        float[] from;
+        float[] to;
+        float theta;
+        bool tooClose = false;
+
+        public SlerpHelper(Quaternion from, Quaternion to) {
+            this.from = new float[4]{from.w, from.x, from.y, from.z};
+            this.to = new float[4]{to.w, to.x, to.y, to.z};
+
+            float cos = 0f;
+            for (int i = 0; i < 4; ++i) 
+                cos += this.from[i] * this.to[i];
+            if (cos < 0f) {
+                for (int i = 0; i < 4; ++i) 
+                    this.to[i] = - this.to[i];
+                cos = -cos;
             }
-            vert.z = - (float)segmentsCount * dist;
-            verts[(LoopCut * vertCount) * segmentsCount + i] = vert;
-        }
 
-        var tris = new int[3 * segmentsCount * (LoopCut * 2 * vertCount)];
-        for (int j = 0; j < segmentsCount; ++j) {
-            for (int k = 0; k < LoopCut; ++k) {
-                int offsetVert = (vertCount*LoopCut) * j + vertCount * k;
-                for (int i = 0; i < vertCount; ++i) {
-                    int offsetTri = (3*2*vertCount*LoopCut) * j + (3*2*vertCount) * k + 3*2*i;
+            theta = Mathf.Acos(cos);
 
-                    tris[offsetTri    ] = offsetVert + i;
-                    tris[offsetTri + 1] = offsetVert + (i+1)%vertCount;
-                    tris[offsetTri + 2] = offsetVert + vertCount + i;
-
-                    tris[offsetTri + 3] = offsetVert + vertCount + i;
-                    tris[offsetTri + 4] = offsetVert + (i+1)%vertCount;
-                    tris[offsetTri + 5] = offsetVert + vertCount + (i+1)%vertCount;
+            if (theta <= 0.001f) {
+                tooClose = true;
+            } else {
+                float invSin = 1f / Mathf.Sin(theta);
+                for (int i = 0; i < 4; ++i) {
+                    this.from[i] *= invSin;
+                    this.to[i] *= invSin;
                 }
             }
         }
 
-        var uvs = new Vector2[vertCount * (LoopCut * segmentsCount + 1)];
+        public Quaternion Slerp(float t) {
+            if (tooClose) {
+                return new Quaternion(from[1], from[2], from[3], from[0]);
+            } else {
+                float coefF = Mathf.Sin((1f-t) * theta);
+                float coefT = Mathf.Sin(t * theta);
+                return new Quaternion(
+                    coefF * from[1] + coefT * to[1],
+                    coefF * from[2] + coefT * to[2],
+                    coefF * from[3] + coefT * to[3],
+                    coefF * from[0] + coefT * to[0]
+                );
+            }
+        }
+    }
 
-        _mesh.SetVertices(verts);
-        _mesh.SetTriangles(tris, 0);
-        _mesh.SetUVs(0, uvs);
-        _mesh.RecalculateBounds();
-        _mesh.RecalculateNormals();
+
+    void Start() {
+        segmentsCount = physicalBody.childCount;
+
+        _mesh = this.GetComponent<MeshFilter>().mesh;
+
+        Vector3[] verts = _mesh.vertices;
+
+        var localFVerts = new List<Vector3>[segmentsCount];
+        var localFVertIndexs = new List<int>[segmentsCount];
+        var localBVerts = new List<Vector3>[segmentsCount];
+        var localBVertIndexs = new List<int>[segmentsCount];
+        for (int i = 0; i < segmentsCount; ++i) {
+            localFVerts[i] = new List<Vector3>();
+            localFVertIndexs[i] = new List<int>();
+            localBVerts[i] = new List<Vector3>();
+            localBVertIndexs[i] = new List<int>();
+        }
+
+        vertsCount = verts.Length;
+        for (int k = 0; k < vertsCount; ++k) {
+            float zd = -verts[k].z / dist;
+            int i = Mathf.FloorToInt(zd);
+            if (i < 0) i = 0;
+            if (i >= segmentsCount) i = segmentsCount - 1;
+
+            Vector3 localVert = verts[k] + ((float)i + 0.5f) * dist * Vector3.forward;
+            if (zd - (float)i <= 0.5f) {
+                localFVerts[i].Add(localVert);
+                localFVertIndexs[i].Add(k);
+            } else {
+                localBVerts[i].Add(localVert);
+                localBVertIndexs[i].Add(k);
+            }
+        }
+
+        this.localFVerts = new Vector3[segmentsCount][];
+        this.localFVertIndexs = new int[segmentsCount][];
+        this.localBVerts = new Vector3[segmentsCount][];
+        this.localBVertIndexs = new int[segmentsCount][];
+        for (int i = 0; i < segmentsCount; ++i) {
+            this.localFVerts[i] = localFVerts[i].ToArray();
+            this.localFVertIndexs[i] = localFVertIndexs[i].ToArray();
+            this.localBVerts[i] = localFVerts[i].ToArray();
+            this.localBVertIndexs[i] = localFVertIndexs[i].ToArray();
+        }
+
+        backs = new Transform[segmentsCount];
+        for (int i = 0; i < segmentsCount; ++i) {
+            backs[i] = physicalBody.GetChild(i).Find("Back");
+        }
+
+        // foreach (int k in this.localFVertIndexs[0])
+        //     verts[k].y += 1f;
+        // _mesh.SetVertices(verts);
+        // _mesh.RecalculateNormals();
+        // _mesh.RecalculateBounds();
     }
 
 
     void Update() {
-        // --------------------------------
-        //  Middle part of each segment
-        // --------------------------------
-        for (int j = 0; j < segmentsCount; ++j) {
-            for (int i = 0; i < vertCount; ++i) {
-                int offset = (LoopCut*vertCount)*j + i;
-                Vector3 vertXY = xs[i] * backs[j].right + ys[i] * backs[j].up + backs[j].position;
+        var verts = _mesh.vertices;
 
-                verts[offset + vertCount  ] = vertXY + 0.3f * dist * backs[j].forward;
-                verts[offset + vertCount*2] = vertXY - 0.3f * dist * backs[j].forward;
-            }
-        }
-
-        // --------------------------------
-        //  Edge
-        // --------------------------------
-        Transform back = backs[0];
-        Vector3 center = back.position + 0.5f * dist * back.forward;
-        for (int i = 0; i < vertCount; ++i) {
-            verts[i] = xs[i] * back.right + ys[i] * back.up + center;
-        }
-
-        back = backs[segmentsCount - 1];
-        center = back.position - 0.5f * dist * back.forward;
-        for (int i = 0; i < vertCount; ++i) {
-            verts[(LoopCut*vertCount)*segmentsCount + i] = xs[i] * back.right + ys[i] * back.up + center;
-        }
-
-        // --------------------------------
-        //  Joint
-        // --------------------------------
-        for (int j = 1; j < segmentsCount; ++j) {
-            Vector3 forward = (backs[j-1].forward + backs[j].forward).normalized;
-            var up = (backs[j-1].up + backs[j].up).normalized;
-            var right = Vector3.Cross(up, forward);
-            center = backs[j].position + 0.5f * dist * backs[j].forward;
-            var shorterAxis = Vector3.Cross(backs[j].forward, backs[j-1].forward).normalized; // Ideal length is 1.
-            if (shorterAxis.magnitude < 0.5f) {
-                for (int i = 0; i < vertCount; ++i) {
-                    verts[(LoopCut*vertCount)*j + i] = xs[i] * right + ys[i] * up + center;
-                }
-            } else {
-                var longerAxis = Vector3.Cross(shorterAxis, forward);
-                float cos = Vector3.Dot(forward, backs[j].forward);
-
-                for  (int i = 0; i < vertCount; ++i) {
-                    Vector3 xy = xs[i] * right + ys[i] * up;
-                    float dot = Vector3.Dot(xy, longerAxis);
-                    if (dot > 0f) {
-                        xy += (- 1f + 1f / cos) * dot * longerAxis;
-                    }
-                    verts[(LoopCut*vertCount)*j + i] = xy + center;
-                }
-            }
+        int n = localFVerts[0].Length;
+        Vector3 right = backs[0].right;
+        Vector3 up = backs[0].up;
+        Vector3 forward = backs[0].forward;
+        Vector3 center = backs[0].position;
+        for (int s = 0; s < n; ++s) {
+            int k = localFVertIndexs[0][s];
+            Vector3 localVert = localFVerts[0][s];
+            verts[k] = localVert.x * right + localVert.y * up + localVert.z * forward + center;
         }
 
         _mesh.SetVertices(verts);
-        _mesh.RecalculateBounds();
         _mesh.RecalculateNormals();
+        _mesh.RecalculateBounds();
     }
 }
