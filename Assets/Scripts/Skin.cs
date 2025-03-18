@@ -124,30 +124,30 @@ public class Skin : MonoBehaviour
 
 
     void Update() {
-        var verts = new Vector3[vertsCount];
+        var newVerts = new Vector3[vertsCount];
 
-        Vector3 right = backs[0].right;
-        Vector3 up = backs[0].up;
-        Vector3 forward = backs[0].forward;
-        Vector3 center = backs[0].position;
+        Quaternion segRot;
+        Vector3 segPos;
         float disth = 0.5f * dist;
         float aspect = radius / disth;
         float invRadius = 1f/radius;
 
-        foreach (int k in localFVertIndexs[0]) {
-            Vector3 localVert = localVerts[k];
-            verts[k] = localVert.x * right + localVert.y * up + localVert.z * forward + center;
-        }
+        segRot = backs[0].rotation;
+        segPos = backs[0].position;
+        foreach (int k in localFVertIndexs[0])
+            newVerts[k] = segRot * localVerts[k] + segPos;
 
         for (int i = 0; i < segmentsCount-1; ++i) {
+            segRot = backs[i].rotation;
+            segPos = backs[i].position;
             var roth = GetHalfRotation(Quaternion.Inverse(backs[i].rotation) * backs[i+1].rotation);
             var helper = new SlerpHelper(roth);
 
             foreach (int k in localBVertIndexs[i]) {
                 float t = -localVerts[k].z / disth;
                 Quaternion rott = helper.Slerp(t);
-                right = rott * Vector3.right;
-                up = rott * Vector3.up;
+                var right = rott * Vector3.right;
+                var up = rott * Vector3.up;
                 Vector3 rotatedXY = localVerts[k].x * right + localVerts[k].y * up;
                 Vector3 direction = rotatedXY.normalized;
                 float xy2 = direction.x * direction.x + direction.y * direction.y;
@@ -162,19 +162,21 @@ public class Skin : MonoBehaviour
                 }
                 localVert.z += localVerts[k].z;
 
-                verts[k] = backs[i].rotation * localVert + backs[i].position;
+                newVerts[k] = segRot * localVert + segPos;
             }
         }
 
         for (int i = 1; i < segmentsCount; ++i) {
+            segRot = backs[i].rotation;
+            segPos = backs[i].position;
             var roth = GetHalfRotation(Quaternion.Inverse(backs[i].rotation) * backs[i-1].rotation);
             var helper = new SlerpHelper(roth);
 
             foreach (int k in localFVertIndexs[i]) {
                 float t = localVerts[k].z / disth;
                 Quaternion rott = helper.Slerp(t);
-                right = rott * Vector3.right;
-                up = rott * Vector3.up;
+                var right = rott * Vector3.right;
+                var up = rott * Vector3.up;
                 Vector3 rotatedXY = localVerts[k].x * right + localVerts[k].y * up;
                 Vector3 direction = rotatedXY.normalized;
                 float xy2 = direction.x * direction.x + direction.y * direction.y;
@@ -189,17 +191,31 @@ public class Skin : MonoBehaviour
                 }
                 localVert.z += localVerts[k].z;
 
-                verts[k] = backs[i].rotation * localVert + backs[i].position;
+                newVerts[k] = segRot * localVert + segPos;
             }
         }
 
-        Quaternion rot = backs[segmentsCount-1].rotation;
-        center = backs[segmentsCount-1].position;
-        foreach (int k in localBVertIndexs[segmentsCount-1]) {
-            verts[k] = rot * localVerts[k] + center;
+        segRot = backs[segmentsCount-1].rotation;
+        segPos = backs[segmentsCount-1].position;
+        foreach (int k in localBVertIndexs[segmentsCount-1])
+            newVerts[k] = segRot * localVerts[k] + segPos;
+
+        // Validate new vertices
+        // If a vertex is too far or include NaN
+        // => Skip updateing it.
+        Vector3[] oldVerts = _mesh.vertices;
+        for (int k = 0; k < vertsCount; ++k) {
+            Vector3 vert = newVerts[k];
+            if (
+                (vert.x == float.NaN) || (vert.y == float.NaN) || (vert.z == float.NaN)
+                || (vert.x >  100000f) || (vert.y >  100000f) || (vert.z >  100000f)
+                || (vert.x < -100000f) || (vert.y < -100000f) || (vert.z < -100000f)
+            ) {
+                newVerts[k] = oldVerts[k];
+            }
         }
 
-        _mesh.SetVertices(verts);
+        _mesh.SetVertices(newVerts);
         _mesh.RecalculateNormals();
         _mesh.RecalculateBounds();
     }
