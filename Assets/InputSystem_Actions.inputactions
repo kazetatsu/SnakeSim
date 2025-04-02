@@ -6,7 +6,7 @@
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Move_",
                     "type": "Value",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
                     "expectedControlType": "Vector2",
@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "e9ccafd3-9b89-4bf5-8365-85abb3bc1738",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -122,7 +131,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -133,7 +142,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -144,7 +153,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -155,7 +164,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -166,7 +175,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -177,7 +186,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -188,7 +197,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -199,7 +208,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -210,7 +219,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -221,7 +230,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -232,7 +241,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -243,7 +252,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "Move",
+                    "action": "Move_",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -541,6 +550,61 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "NeedMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "efc73fd9-4ca6-4733-bb9f-3ab9003b86b9",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "30f4f5fc-d789-44dc-bd64-ea1d7b5d59e1",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "650ff71c-3b0c-4fe8-956a-65355759a768",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ad7f27d6-f68f-4f54-b489-7705e2111e91",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7be4ff58-3b45-4532-809c-c1b8a5a39ebd",
+                    "path": "<Joystick>/stick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
