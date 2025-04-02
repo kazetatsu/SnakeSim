@@ -16,7 +16,7 @@ public class Move : MonoBehaviour
     List<Queue<float>> jointAngleQs;
     [SerializeField, Range(1,32)] int qCapacity;
 
-    private Vector2 currentInput;
+    float currentInput;
 
     HingeJoint[] bellyJoints;
 
@@ -65,19 +65,19 @@ public class Move : MonoBehaviour
 
 
     void Update() {
-        currentInput = _action.ReadValue<Vector2>();
+        currentInput = _action.ReadValue<float>();
     }
 
 
     void FixedUpdate() {
         // Calcurate target angle of 2nd joint
-        if (-0.5f < currentInput.x && currentInput.x < 0.5f) {
+        if (-0.5f < currentInput && currentInput < 0.5f) {
             float sign = Mathf.Sign(firstJointAng);
             firstJointAng -= sign * angSpeed * Time.fixedDeltaTime;
             if (sign * firstJointAng < 0f)
                 firstJointAng = 0f;
         } else {
-            firstJointAng += Mathf.Sign(currentInput.x) * angSpeed * Time.fixedDeltaTime;
+            firstJointAng += Mathf.Sign(currentInput) * angSpeed * Time.fixedDeltaTime;
             if (firstJointAng < -angLimit)
                 firstJointAng = -angLimit;
             else if (firstJointAng > angLimit)
