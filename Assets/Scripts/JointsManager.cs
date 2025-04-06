@@ -46,15 +46,7 @@ public class JointsManager : MonoBehaviour
     }
 
     void FixedUpdate() {
-        for (int i = 0; i < jointsCount; ++i) {
-            Quaternion rot = targetRotations[i];
-            if (   (float.IsNormal(rot.w) || rot.w == 0f)
-                && (float.IsNormal(rot.x) || rot.x == 0f)
-                && (float.IsNormal(rot.y) || rot.y == 0f)
-                && (float.IsNormal(rot.z) || rot.z == 0f)
-            ) {
-                joints[i].targetRotation = rot;
-            }
-        }
+        for (int i = 0; i < jointsCount; ++i)
+            joints[i].targetRotation = targetRotations[i];
     }
 }

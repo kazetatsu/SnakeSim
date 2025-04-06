@@ -109,7 +109,8 @@ public class Move : MonoBehaviour
         toDirection = toDirection.normalized;
         if (toDirection.magnitude > Mathf.Epsilon) {
             float radX = Mathf.Asin(Vector3.Dot(toDirection, secondSegment.right));
-            _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
+            if (float.IsNormal(radX) || radX == 0f)
+                _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
         }
     }
 }
