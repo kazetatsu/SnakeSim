@@ -22,16 +22,17 @@ public class Move : MonoBehaviour
 
     Transform secondSegment;
     [SerializeField] Transform _camera;
+    Rigidbody[] backs;
 
     public void Activate() {
-        foreach (HingeJoint belly in bellyJoints)
-            belly.useMotor = false;
+        // foreach (HingeJoint belly in bellyJoints)
+        //     belly.useMotor = false;
         enabled = true;
     }
 
     public void Deactivate() {
-        foreach (HingeJoint belly in bellyJoints)
-            belly.useMotor = true;
+        // foreach (HingeJoint belly in bellyJoints)
+        //     belly.useMotor = true;
         enabled = false;
     }
 
@@ -48,15 +49,23 @@ public class Move : MonoBehaviour
         }
 
         var _joints = new List<HingeJoint>();
+        var _bodys = new List<Rigidbody>();
         for (int i = 0; i < this.transform.childCount; ++i) {
+            Transform segment = this.transform.GetChild(i);
             _joints.Add(
-                this.transform
-                .GetChild(i)
+                segment
                 .Find("Belly")
                 .GetComponent<HingeJoint>()
             );
+
+            _bodys.Add(
+                segment
+                .Find("Back")
+                .GetComponent<Rigidbody>()
+            );
         }
         bellyJoints = _joints.ToArray();
+        backs = _bodys.ToArray();
 
         secondSegment = this.transform.GetChild(1).Find("Back");
 
@@ -104,11 +113,16 @@ public class Move : MonoBehaviour
             futureAng = currentAng;
         }
 
-        Vector3 toDirection = _camera.forward;
-        toDirection -= Vector3.Dot(_camera.forward, secondSegment.up) * secondSegment.up;
-        toDirection = toDirection.normalized;
-        if (toDirection.magnitude > Mathf.Epsilon) {
-            float radX = Mathf.Asin(Vector3.Dot(toDirection, secondSegment.right));
+        // Vector3 toDirection = _camera.forward;
+        // toDirection -= Vector3.Dot(_camera.forward, secondSegment.up) * secondSegment.up;
+        // toDirection = toDirection.normalized;
+        var toDirection = Vector3.zero;
+        for (int i = 1; i <= _manager.JointsCount; ++i)
+            toDirection += backs[i].linearVelocity;
+        toDirection -= Vector3.Dot(toDirection, secondSegment.up) * secondSegment.up;
+
+        if (toDirection.magnitude > 4f) {
+            float radX = Mathf.Asin(Vector3.Dot(toDirection.normalized, secondSegment.right));
             if (float.IsNormal(radX) || radX == 0f)
                 _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
         }
