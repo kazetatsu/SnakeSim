@@ -5,7 +5,7 @@ public class Strategy : MonoBehaviour
 {
     InputAction actionMove;
     Move _move;
-    Look _look;
+    // Look _look;
 
     enum StrategyCode {
         None,
@@ -17,7 +17,7 @@ public class Strategy : MonoBehaviour
     void Start() {
         actionMove = InputSystem.actions.FindAction("NeedMove");
         _move = this.GetComponent<Move>();
-        _look = this.GetComponent<Look>();
+        // _look = this.GetComponent<Look>();
         currentStarategy = StrategyCode.None;
     }
 
@@ -26,23 +26,23 @@ public class Strategy : MonoBehaviour
         if (actionMove.IsPressed())
             newStarategy = StrategyCode.Move;
         else
-            newStarategy = StrategyCode.Look;
+            newStarategy = StrategyCode.None;
 
         if (newStarategy != currentStarategy) {
             switch (newStarategy) {
                 case StrategyCode.None:
                     _move.Deactivate();
-                    _look.Deactivate();
+                    // _look.Deactivate();
                     break;
 
                 case StrategyCode.Move:
                     _move.Activate();
-                    _look.Deactivate();
+                    // _look.Deactivate();
                     break;
 
                 case StrategyCode.Look:
                     _move.Deactivate();
-                    _look.Activate();
+                    // _look.Activate();
                     break;
             }
             currentStarategy = newStarategy;

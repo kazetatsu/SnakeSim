@@ -21,20 +21,10 @@ public class Move : MonoBehaviour
     HingeJoint[] bellyJoints;
 
     Transform secondSegment;
-    [SerializeField] Transform _camera;
     Rigidbody[] backs;
 
-    public void Activate() {
-        // foreach (HingeJoint belly in bellyJoints)
-        //     belly.useMotor = false;
-        enabled = true;
-    }
-
-    public void Deactivate() {
-        // foreach (HingeJoint belly in bellyJoints)
-        //     belly.useMotor = true;
-        enabled = false;
-    }
+    public void Activate() {enabled = true;}
+    public void Deactivate() {enabled = false;}
 
     void Start() {
         _manager = this.GetComponent<JointsManager>();
@@ -99,6 +89,7 @@ public class Move : MonoBehaviour
             0f
         );
 
+        // Set target rotations of 3rd~ joint.
         float futureAng = firstJointAng;
         for (int i = 2; i < _manager.JointsCount; ++i) {
             Queue<float> q = jointAngleQs[i - 1];
@@ -113,9 +104,7 @@ public class Move : MonoBehaviour
             futureAng = currentAng;
         }
 
-        // Vector3 toDirection = _camera.forward;
-        // toDirection -= Vector3.Dot(_camera.forward, secondSegment.up) * secondSegment.up;
-        // toDirection = toDirection.normalized;
+        // Calcurate target rotations of 1st joint.
         var toDirection = Vector3.zero;
         for (int i = 1; i <= _manager.JointsCount; ++i)
             toDirection += backs[i].linearVelocity;
