@@ -6,12 +6,20 @@ public class Skin : MonoBehaviour
 {
     Mesh mesh;
 
-    [SerializeField] float dist;
-    [SerializeField] float radius;
-    int segmentsCount;
+    int segmentsCount = Consts.SegmentsCount;
 
-    [SerializeField] Transform physicalBody;
+    [SerializeField] Transform bone;
     Transform[] backs;
+    public void SetBone(Transform bone) {
+        if (!this.bone)
+            transform.GetComponent<MeshRenderer>().enabled = true;
+
+        this.bone = bone;
+        backs = new Transform[segmentsCount];
+        for (int i = 0; i < segmentsCount; ++i) {
+            backs[i] = bone.GetChild(i).Find("Back");
+        }
+    }
 
     int vertsCount;
     Vector3[] localVerts;
@@ -72,9 +80,8 @@ public class Skin : MonoBehaviour
         return new Quaternion(q[1]/norm, q[2]/norm, q[3]/norm, q[0]/norm);
     }
 
-    void Start() {
-        segmentsCount = physicalBody.childCount;
-
+    void Start()
+    {
         mesh = this.GetComponent<MeshFilter>().mesh;
 
         Vector3[] verts = mesh.vertices;
@@ -82,37 +89,38 @@ public class Skin : MonoBehaviour
         localVerts = new Vector3[verts.Length];
         var localFVertIndexs = new List<int>[segmentsCount];
         var localBVertIndexs = new List<int>[segmentsCount];
-        for (int i = 0; i < segmentsCount; ++i) {
+        for (int i = 0; i < segmentsCount; ++i)
+        {
             localFVertIndexs[i] = new List<int>();
             localBVertIndexs[i] = new List<int>();
         }
 
         vertsCount = verts.Length;
-        for (int k = 0; k < vertsCount; ++k) {
-            float zd = -verts[k].z / dist;
+        for (int k = 0; k < vertsCount; ++k)
+        {
+            float zd = -verts[k].z / Consts.SegmentsDist;
             int i = Mathf.FloorToInt(zd);
             if (i < 0) i = 0;
             if (i >= segmentsCount) i = segmentsCount - 1;
 
-            localVerts[k] = verts[k] + ((float)i + 0.5f) * dist * Vector3.forward;
+            localVerts[k] = verts[k] + ((float)i + 0.5f) * Consts.SegmentsDist * Vector3.forward;
 
-            if (zd - (float)i <= 0.5f) {
+            if (zd - (float)i <= 0.5f)
+            {
                 localFVertIndexs[i].Add(k);
-            } else {
+            }
+            else
+            {
                 localBVertIndexs[i].Add(k);
             }
         }
 
         this.localFVertIndexs = new int[segmentsCount][];
         this.localBVertIndexs = new int[segmentsCount][];
-        for (int i = 0; i < segmentsCount; ++i) {
+        for (int i = 0; i < segmentsCount; ++i)
+        {
             this.localFVertIndexs[i] = localFVertIndexs[i].ToArray();
             this.localBVertIndexs[i] = localBVertIndexs[i].ToArray();
-        }
-
-        backs = new Transform[segmentsCount];
-        for (int i = 0; i < segmentsCount; ++i) {
-            backs[i] = physicalBody.GetChild(i).Find("Back");
         }
 
         // foreach (int k in this.localFVertIndexs[0])
@@ -124,13 +132,15 @@ public class Skin : MonoBehaviour
 
 
     void Update() {
+        if (!bone) return;
+
         var newVerts = new Vector3[vertsCount];
 
         Quaternion segRot;
         Vector3 segPos;
-        float disth = 0.5f * dist;
-        float aspect = radius / disth;
-        float invRadius = 1f/radius;
+        float disth = 0.5f * Consts.SegmentsDist;
+        float aspect = Consts.SegmentRadius / disth;
+        float invRadius = 1f/Consts.SegmentRadius;
 
         segRot = backs[0].rotation;
         segPos = backs[0].position;
@@ -157,7 +167,7 @@ public class Skin : MonoBehaviour
                     localVert = rotatedXY * Mathf.Sqrt(1f + direction.z * direction.z / xy2);
                 } else {
                     float zdh = localVerts[k].z + disth;
-                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + radius * radius);
+                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Consts.SegmentRadius * Consts.SegmentRadius);
                     localVert = a * invRadius * rotatedXY;
                 }
                 localVert.z += localVerts[k].z;
@@ -186,7 +196,7 @@ public class Skin : MonoBehaviour
                     localVert = rotatedXY * Mathf.Sqrt(1f + direction.z * direction.z / xy2);
                 } else {
                     float zdh = localVerts[k].z - disth;
-                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + radius * radius);
+                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Consts.SegmentRadius * Consts.SegmentRadius);
                     localVert = a * invRadius * rotatedXY;
                 }
                 localVert.z += localVerts[k].z;

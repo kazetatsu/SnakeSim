@@ -13,7 +13,7 @@ public class Meander : MonoBehaviour
     [SerializeField] float angSpeed;
     [SerializeField] float coefLift;
 
-    List<Queue<float>> jointAngleQs;
+    Queue<float>[] jointAngleQs;
     [SerializeField, Range(1,32)] int qCapacity;
 
     float currentInput;
@@ -30,12 +30,13 @@ public class Meander : MonoBehaviour
         joints = this.GetComponent<JointsRotater>();
         action = InputSystem.actions.FindAction("Meander");
 
-        jointAngleQs = new List<Queue<float>>();
-        for (int i = 1; i < joints.JointsCount; ++i) {
+        int count = Consts.JointsCount - 1;
+        jointAngleQs = new Queue<float>[count];
+        for (int i = 0; i < count; ++i) {
             var q = new Queue<float>(qCapacity);
             for (int j = 0; j < qCapacity; ++j)
                 q.Enqueue(0f);
-            jointAngleQs.Add(q);
+            jointAngleQs[i] = q;
         }
 
         var _joints = new List<HingeJoint>();
@@ -91,7 +92,7 @@ public class Meander : MonoBehaviour
 
         // Set target rotations of 3rd~ joint.
         float futureAng = firstJointAng;
-        for (int i = 2; i < joints.JointsCount; ++i) {
+        for (int i = 2; i < Consts.JointsCount; ++i) {
             Queue<float> q = jointAngleQs[i - 1];
             float currentAng = q.Dequeue();
             q.Enqueue(futureAng);
@@ -106,7 +107,7 @@ public class Meander : MonoBehaviour
 
         // Calcurate target rotations of 1st joint.
         var toDirection = Vector3.zero;
-        for (int i = 1; i <= joints.JointsCount; ++i)
+        for (int i = 1; i <= Consts.JointsCount; ++i)
             toDirection += backs[i].linearVelocity;
         toDirection -= Vector3.Dot(toDirection, secondSegment.up) * secondSegment.up;
 

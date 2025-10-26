@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class JointsRotater : MonoBehaviour
 {
-    int jointsCount;
-    public int JointsCount { get => jointsCount; }
-
     ConfigurableJoint[] joints;
     public Quaternion[] targetRotations;
 
@@ -38,15 +35,14 @@ public class JointsRotater : MonoBehaviour
         }
 
         // Init member variables
-        jointsCount = _joints.Count;
         joints = _joints.ToArray();
-        targetRotations = new Quaternion[jointsCount];
-        for (int i = 0; i < jointsCount; ++i)
+        targetRotations = new Quaternion[Consts.JointsCount];
+        for (int i = 0; i < Consts.JointsCount; ++i)
             targetRotations[i] = Quaternion.identity;
     }
 
     void FixedUpdate() {
-        for (int i = 0; i < jointsCount; ++i)
+        for (int i = 0; i < Consts.JointsCount; ++i)
             joints[i].targetRotation = targetRotations[i];
     }
 }

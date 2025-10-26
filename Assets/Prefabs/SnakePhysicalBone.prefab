@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 172074393975950368}
   - component: {fileID: 1111593105892079658}
-  - component: {fileID: 5451071159456242830}
   - component: {fileID: 5633854566056779815}
   - component: {fileID: 1760056943159944836}
   m_Layer: 0
@@ -51,20 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRotations: []
---- !u!114 &5451071159456242830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2443521173052163137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1f908c17bda17e7c92544a5eedb2246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  segmentPrefab: {fileID: 2692891180153307073, guid: 39f4921170d5c57e68b77609bf1e8569, type: 3}
-  dist: 1.2
 --- !u!114 &5633854566056779815
 MonoBehaviour:
   m_ObjectHideFlags: 0
