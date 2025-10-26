@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class JointsManager : MonoBehaviour
+public class JointsRotater : MonoBehaviour
 {
     int jointsCount;
     public int JointsCount { get => jointsCount; }

@@ -4,7 +4,7 @@ using UnityEngine.SocialPlatforms.GameCenter;
 
 public class Skin : MonoBehaviour
 {
-    Mesh _mesh;
+    Mesh mesh;
 
     [SerializeField] float dist;
     [SerializeField] float radius;
@@ -75,9 +75,9 @@ public class Skin : MonoBehaviour
     void Start() {
         segmentsCount = physicalBody.childCount;
 
-        _mesh = this.GetComponent<MeshFilter>().mesh;
+        mesh = this.GetComponent<MeshFilter>().mesh;
 
-        Vector3[] verts = _mesh.vertices;
+        Vector3[] verts = mesh.vertices;
 
         localVerts = new Vector3[verts.Length];
         var localFVertIndexs = new List<int>[segmentsCount];
@@ -203,7 +203,7 @@ public class Skin : MonoBehaviour
         // Validate new vertices
         // If a vertex is too far or include NaN
         // => Skip updateing it.
-        Vector3[] oldVerts = _mesh.vertices;
+        Vector3[] oldVerts = mesh.vertices;
         for (int k = 0; k < vertsCount; ++k) {
             Vector3 vert = newVerts[k];
             if (
@@ -215,8 +215,8 @@ public class Skin : MonoBehaviour
             }
         }
 
-        _mesh.SetVertices(newVerts);
-        _mesh.RecalculateNormals();
-        _mesh.RecalculateBounds();
+        mesh.SetVertices(newVerts);
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
     }
 }

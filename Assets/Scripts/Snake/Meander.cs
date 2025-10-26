@@ -4,10 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Move : MonoBehaviour
+public class Meander : MonoBehaviour
 {
-    JointsManager _manager;
-    InputAction _action;
+    JointsRotater joints;
+    InputAction action;
     float firstJointAng = 0f;
     [SerializeField] float angLimit;
     [SerializeField] float angSpeed;
@@ -27,11 +27,11 @@ public class Move : MonoBehaviour
     public void Deactivate() {enabled = false;}
 
     void Start() {
-        _manager = this.GetComponent<JointsManager>();
-        _action = InputSystem.actions.FindAction("Move");
+        joints = this.GetComponent<JointsRotater>();
+        action = InputSystem.actions.FindAction("Meander");
 
         jointAngleQs = new List<Queue<float>>();
-        for (int i = 1; i < _manager.JointsCount; ++i) {
+        for (int i = 1; i < joints.JointsCount; ++i) {
             var q = new Queue<float>(qCapacity);
             for (int j = 0; j < qCapacity; ++j)
                 q.Enqueue(0f);
@@ -64,7 +64,7 @@ public class Move : MonoBehaviour
 
 
     void Update() {
-        currentInput = _action.ReadValue<float>();
+        currentInput = action.ReadValue<float>();
     }
 
 
@@ -83,7 +83,7 @@ public class Move : MonoBehaviour
                 firstJointAng = angLimit;
         }
 
-        _manager.targetRotations[1] = Quaternion.Euler(
+        joints.targetRotations[1] = Quaternion.Euler(
             firstJointAng,
             coefLift * Mathf.Abs(firstJointAng),
             0f
@@ -91,12 +91,12 @@ public class Move : MonoBehaviour
 
         // Set target rotations of 3rd~ joint.
         float futureAng = firstJointAng;
-        for (int i = 2; i < _manager.JointsCount; ++i) {
+        for (int i = 2; i < joints.JointsCount; ++i) {
             Queue<float> q = jointAngleQs[i - 1];
             float currentAng = q.Dequeue();
             q.Enqueue(futureAng);
 
-            _manager.targetRotations[i] = Quaternion.Euler(
+            joints.targetRotations[i] = Quaternion.Euler(
                 currentAng,
                 coefLift * Mathf.Abs(currentAng),
                 0f
@@ -106,14 +106,14 @@ public class Move : MonoBehaviour
 
         // Calcurate target rotations of 1st joint.
         var toDirection = Vector3.zero;
-        for (int i = 1; i <= _manager.JointsCount; ++i)
+        for (int i = 1; i <= joints.JointsCount; ++i)
             toDirection += backs[i].linearVelocity;
         toDirection -= Vector3.Dot(toDirection, secondSegment.up) * secondSegment.up;
 
         if (toDirection.magnitude > 4f) {
             float radX = Mathf.Asin(Vector3.Dot(toDirection.normalized, secondSegment.right));
             if (float.IsNormal(radX) || radX == 0f)
-                _manager.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
+                joints.targetRotations[0] = Quaternion.Euler(Mathf.Rad2Deg * radX, 0f, 0f);
         }
     }
 }
