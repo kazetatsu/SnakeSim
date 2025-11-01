@@ -7,13 +7,16 @@ public class SnakeHeadDummy : MonoBehaviour
 
     [SerializeField] float speed;
 
+
     void Start() {
         action = InputSystem.actions.FindAction("MoveDebug");
     }
 
+
     void OnDrawGizmos() {
         Gizmos.DrawWireSphere(transform.position, 1f);
     }
+
 
     void Update() {
         var v = speed * action.ReadValue<Vector3>();

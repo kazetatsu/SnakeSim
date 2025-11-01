@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 [System.Serializable]
 public class PoseData {
     public Quaternion[] rots;
@@ -9,7 +10,9 @@ public class PoseData {
     public Vector3 rootPos;
 }
 
-public class Pose : MonoBehaviour {
+
+public class Pose : MonoBehaviour
+{
     int segmentsCount;
     Transform[] segments;
     [SerializeField] float dist;
@@ -19,7 +22,6 @@ public class Pose : MonoBehaviour {
     string filepath;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         segmentsCount = transform.childCount;
 
@@ -43,7 +45,7 @@ public class Pose : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
+
     void Update() {
         for (int i = segmentsCount - 2; i >= 0; --i) {
             segments[i].rotation = rots[i] * segments[i + 1].rotation;

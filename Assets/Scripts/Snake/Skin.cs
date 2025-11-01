@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class Skin : MonoBehaviour
 {
     Mesh mesh;
 
-    int segmentsCount = Consts.SegmentsCount;
+    int segmentsCount = Snake.SegmentsCount;
 
     [SerializeField] Transform bone;
     Transform[] backs;
+
+
     public void SetBone(Transform bone) {
         if (!this.bone)
             transform.GetComponent<MeshRenderer>().enabled = true;
@@ -33,28 +34,26 @@ public class Skin : MonoBehaviour
         bool tooClose = false;
 
         public SlerpHelper(Quaternion to) {
-            if (to.w >= 0f) {
+            if (to.w >= 0f)
                 this.to = new float[4]{ to.w,  to.x,  to.y,  to.z};
-            } else {
+            else
                 this.to = new float[4]{-to.w, -to.x, -to.y, -to.z};
-            }
 
             theta = Mathf.Acos(to.w);
 
-            if (theta <= 0.001f) {
+            if (theta <= 0.001f)
                 tooClose = true;
-            } else {
+            else {
                 float invSin = 1f / Mathf.Sin(theta);
-                for (int i = 0; i < 4; ++i) {
+                for (int i = 0; i < 4; ++i)
                     this.to[i] *= invSin;
-                }
             }
         }
 
         public Quaternion Slerp(float t) {
-            if (tooClose) {
+            if (tooClose)
                 return new Quaternion(to[1], to[2], to[3], to[0]);
-            } else {
+            else {
                 float coefF = Mathf.Sin((1f-t) * theta);
                 float coefT = Mathf.Sin(t * theta);
                 return new Quaternion(
@@ -66,13 +65,14 @@ public class Skin : MonoBehaviour
             }
         }
     }
+
+
     Quaternion GetHalfRotation (Quaternion rot) {
         float[] q;
-        if (rot.w >= 0f) {
+        if (rot.w >= 0f)
             q = new float[4]{1f + rot.w,  rot.x,  rot.y,  rot.z};
-        } else {
+        else
             q = new float[4]{1f - rot.w, -rot.x, -rot.y, -rot.z};
-        }
         float norm = 0f;
         for (int i = 0; i < 4; ++i)
             norm += q[i] * q[i];
@@ -80,8 +80,8 @@ public class Skin : MonoBehaviour
         return new Quaternion(q[1]/norm, q[2]/norm, q[3]/norm, q[0]/norm);
     }
 
-    void Start()
-    {
+
+    void Start() {
         mesh = this.GetComponent<MeshFilter>().mesh;
 
         Vector3[] verts = mesh.vertices;
@@ -89,45 +89,32 @@ public class Skin : MonoBehaviour
         localVerts = new Vector3[verts.Length];
         var localFVertIndexs = new List<int>[segmentsCount];
         var localBVertIndexs = new List<int>[segmentsCount];
-        for (int i = 0; i < segmentsCount; ++i)
-        {
+        for (int i = 0; i < segmentsCount; ++i) {
             localFVertIndexs[i] = new List<int>();
             localBVertIndexs[i] = new List<int>();
         }
 
         vertsCount = verts.Length;
-        for (int k = 0; k < vertsCount; ++k)
-        {
-            float zd = -verts[k].z / Consts.SegmentsDist;
+        for (int k = 0; k < vertsCount; ++k) {
+            float zd = -verts[k].z / Snake.SegmentsDist;
             int i = Mathf.FloorToInt(zd);
             if (i < 0) i = 0;
             if (i >= segmentsCount) i = segmentsCount - 1;
 
-            localVerts[k] = verts[k] + ((float)i + 0.5f) * Consts.SegmentsDist * Vector3.forward;
+            localVerts[k] = verts[k] + ((float)i + 0.5f) * Snake.SegmentsDist * Vector3.forward;
 
             if (zd - (float)i <= 0.5f)
-            {
                 localFVertIndexs[i].Add(k);
-            }
             else
-            {
                 localBVertIndexs[i].Add(k);
-            }
         }
 
         this.localFVertIndexs = new int[segmentsCount][];
         this.localBVertIndexs = new int[segmentsCount][];
-        for (int i = 0; i < segmentsCount; ++i)
-        {
+        for (int i = 0; i < segmentsCount; ++i) {
             this.localFVertIndexs[i] = localFVertIndexs[i].ToArray();
             this.localBVertIndexs[i] = localBVertIndexs[i].ToArray();
         }
-
-        // foreach (int k in this.localFVertIndexs[0])
-        //     verts[k].y += 1f;
-        // _mesh.SetVertices(verts);
-        // _mesh.RecalculateNormals();
-        // _mesh.RecalculateBounds();
     }
 
 
@@ -138,9 +125,9 @@ public class Skin : MonoBehaviour
 
         Quaternion segRot;
         Vector3 segPos;
-        float disth = 0.5f * Consts.SegmentsDist;
-        float aspect = Consts.SegmentRadius / disth;
-        float invRadius = 1f/Consts.SegmentRadius;
+        float disth = 0.5f * Snake.SegmentsDist;
+        float aspect = Snake.SegmentRadius / disth;
+        float invRadius = 1f/Snake.SegmentRadius;
 
         segRot = backs[0].rotation;
         segPos = backs[0].position;
@@ -163,11 +150,11 @@ public class Skin : MonoBehaviour
                 float xy2 = direction.x * direction.x + direction.y * direction.y;
 
                 Vector3 localVert;
-                if (-t + aspect * direction.z / Mathf.Sqrt(xy2) >= -1f) {
+                if (-t + aspect * direction.z / Mathf.Sqrt(xy2) >= -1f)
                     localVert = rotatedXY * Mathf.Sqrt(1f + direction.z * direction.z / xy2);
-                } else {
+                else {
                     float zdh = localVerts[k].z + disth;
-                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Consts.SegmentRadius * Consts.SegmentRadius);
+                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Snake.SegmentRadius * Snake.SegmentRadius);
                     localVert = a * invRadius * rotatedXY;
                 }
                 localVert.z += localVerts[k].z;
@@ -192,11 +179,11 @@ public class Skin : MonoBehaviour
                 float xy2 = direction.x * direction.x + direction.y * direction.y;
 
                 Vector3 localVert;
-                if (t + aspect * direction.z / Mathf.Sqrt(xy2) <= 1f) {
+                if (t + aspect * direction.z / Mathf.Sqrt(xy2) <= 1f)
                     localVert = rotatedXY * Mathf.Sqrt(1f + direction.z * direction.z / xy2);
-                } else {
+                else {
                     float zdh = localVerts[k].z - disth;
-                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Consts.SegmentRadius * Consts.SegmentRadius);
+                    float a = -direction.z * zdh + Mathf.Sqrt(-xy2 * zdh * zdh + Snake.SegmentRadius * Snake.SegmentRadius);
                     localVert = a * invRadius * rotatedXY;
                 }
                 localVert.z += localVerts[k].z;

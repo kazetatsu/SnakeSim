@@ -7,6 +7,7 @@ public class JointsRotater : MonoBehaviour
     ConfigurableJoint[] joints;
     public Quaternion[] targetRotations;
 
+
     void Start() {
         // Get ConfigurableJoint of each segment
         // & Connect bodies  between connected segments
@@ -36,13 +37,14 @@ public class JointsRotater : MonoBehaviour
 
         // Init member variables
         joints = _joints.ToArray();
-        targetRotations = new Quaternion[Consts.JointsCount];
-        for (int i = 0; i < Consts.JointsCount; ++i)
+        targetRotations = new Quaternion[Snake.JointsCount];
+        for (int i = 0; i < Snake.JointsCount; ++i)
             targetRotations[i] = Quaternion.identity;
     }
 
+
     void FixedUpdate() {
-        for (int i = 0; i < Consts.JointsCount; ++i)
+        for (int i = 0; i < Snake.JointsCount; ++i)
             joints[i].targetRotation = targetRotations[i];
     }
 }

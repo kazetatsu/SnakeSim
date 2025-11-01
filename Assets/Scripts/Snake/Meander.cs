@@ -23,14 +23,16 @@ public class Meander : MonoBehaviour
     Transform secondSegment;
     Rigidbody[] backs;
 
-    public void Activate() {enabled = true;}
-    public void Deactivate() {enabled = false;}
+
+    public void Activate() { enabled = true; }
+    public void Deactivate() { enabled = false; }
+
 
     void Start() {
         joints = this.GetComponent<JointsRotater>();
         action = InputSystem.actions.FindAction("Meander");
 
-        int count = Consts.JointsCount - 1;
+        int count = Snake.JointsCount - 1;
         jointAngleQs = new Queue<float>[count];
         for (int i = 0; i < count; ++i) {
             var q = new Queue<float>(qCapacity);
@@ -64,9 +66,7 @@ public class Meander : MonoBehaviour
     }
 
 
-    void Update() {
-        currentInput = action.ReadValue<float>();
-    }
+    void Update() { currentInput = action.ReadValue<float>(); }
 
 
     void FixedUpdate() {
@@ -92,7 +92,7 @@ public class Meander : MonoBehaviour
 
         // Set target rotations of 3rd~ joint.
         float futureAng = firstJointAng;
-        for (int i = 2; i < Consts.JointsCount; ++i) {
+        for (int i = 2; i < Snake.JointsCount; ++i) {
             Queue<float> q = jointAngleQs[i - 1];
             float currentAng = q.Dequeue();
             q.Enqueue(futureAng);
@@ -107,7 +107,7 @@ public class Meander : MonoBehaviour
 
         // Calcurate target rotations of 1st joint.
         var toDirection = Vector3.zero;
-        for (int i = 1; i <= Consts.JointsCount; ++i)
+        for (int i = 1; i <= Snake.JointsCount; ++i)
             toDirection += backs[i].linearVelocity;
         toDirection -= Vector3.Dot(toDirection, secondSegment.up) * secondSegment.up;
 
