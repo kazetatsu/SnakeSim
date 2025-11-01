@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public class MusicArea : MonoBehaviour
+{
+    static float disableHeight = 1f;
+    static float fadeHeight = 4f;
+
+    [SerializeField] float height;
+    public bool playing;
+    public float volume = 1f;
+    public AudioClip clip;
+
+    void OnDrawGizmos() {
+        Gizmos.DrawWireCube(transform.position, new Vector3(32f, 2f*height, 32f));
+    }
+
+    void Update() {
+        float y = Snake.headPos.y - transform.position.y;
+        volume = Mathf.Min(1f, (height - y) / fadeHeight, (height + y) / fadeHeight);
+        volume = Mathf.Max(0f, volume);
+
+        // volume > 0  <=>  -height < y < height
+        if (volume > 0f) {
+            if (!playing)
+                playing = true;
+        }
+        else if (y < -height - disableHeight || height + disableHeight < y) {
+            if (playing)
+                playing = false;
+        }
+    }
+}
