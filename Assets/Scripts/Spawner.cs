@@ -1,20 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SnakeSpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject bonePrefab;
     [SerializeField] GameObject segmentPrefab;
     Skin skin;
     Transform bone;
+    [SerializeField] List<Transform> spawnPoints;
+    int spawnPointID = 0;
 
 
-    void Start() {
-        skin = GameObject.Find("SnakeSkin").GetComponent<Skin>();
+    public bool TrySetSpawnPointID(int ID) {
+        if (0 <= ID && ID < spawnPoints.Count) {
+            spawnPointID = ID;
+            return true;
+        } else return false;
     }
 
 
-    public void Spawn(Vector3 position, Quaternion rotation) {
+    void Spawn(Vector3 position, Quaternion rotation) {
         if (bone) Destroy(bone.gameObject);
 
         bone = Instantiate(bonePrefab).transform;
@@ -37,9 +43,19 @@ public class SnakeSpawner : MonoBehaviour
     }
 
 
+    void Spawn() {
+        Spawn(spawnPoints[spawnPointID].position, spawnPoints[spawnPointID].rotation);
+    }
+
+
+    void Start() {
+        skin = GameObject.Find("SnakeSkin").GetComponent<Skin>();
+        Spawn();
+    }
+
+
     // for debug
-    public void OnPressed(InputAction.CallbackContext context) {
-        if (!context.performed) return;
-        Spawn(new Vector3(0f, 10f, 0f), Quaternion.identity);
+    public void ForceSpawn(int ID) {
+        Spawn(spawnPoints[ID].position, spawnPoints[ID].rotation);
     }
 }
