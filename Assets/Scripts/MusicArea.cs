@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MusicArea : MonoBehaviour
 {
-    static float disableHeight = 1f;
-    static float fadeHeight = 4f;
+    static float disableHeight = .5f;
+    static float fadeHeight = 3f;
 
     [SerializeField] float height;
     public bool playing;
