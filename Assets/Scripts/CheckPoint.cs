@@ -2,17 +2,34 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
-    [SerializeField] int spawnPointID;
     Moderator moderator;
+    Spawner spawner;
+    int ID;
+    CheckerFlag flag;
+    Collider _collider;
 
 
     void Start() {
         moderator = GameObject.Find("Moderator").GetComponent<Moderator>();
+        spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
+        ID = spawner.GetCheckPointID(transform); // Get own checkpointID
+        flag = transform.GetComponentInChildren<CheckerFlag>();
+        _collider = GetComponent<Collider>();
+
+        if (ID <= moderator.SpawnPointID) {
+            flag.RaiseFlagImmediately();
+            Destroy(_collider);
+            Destroy(this);
+        }
     }
 
 
-    void OnTriggerEnter(Collider collider) {
-        moderator.TrySetSpawnPointID(spawnPointID);
+    void OnTriggerEnter(Collider _) {
+        if (moderator.TrySetSpawnPointID(ID)) {
+            spawner.SetSpawnPoint(ID);
+            flag.RaiseFlagGradually();
+        }
+        Destroy(_collider);
         Destroy(this);
     }
 }

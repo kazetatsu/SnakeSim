@@ -236,7 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2215841123849164056}
   m_Layer: 0
-  m_Name: SnakeSegment
+  m_Name: SnakePhysicalSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3593367603221007968}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 630f3b896b8444710a7790d87e62ec7d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

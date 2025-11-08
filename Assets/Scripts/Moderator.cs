@@ -3,24 +3,23 @@ using UnityEngine;
 public class Moderator : MonoBehaviour
 {
     SaverLoader sl;
-    Spawner spawner;
+    // Spawn point is a check point s.t. the snake spawn.
+    public int SpawnPointID { get => sl.data.spawnPointID; }
 
 
     public bool TrySetSpawnPointID(int ID) {
-        if (sl.data.spawnPointID < ID && spawner.TrySetSpawnPointID(ID)) {
+        if (sl.data.spawnPointID < ID) {
             sl.data.spawnPointID = ID;
             sl.Save();
             return true;
-        } else return false;
+        }
+        return false;
     }
 
 
     void Start() {
         sl = new SaverLoader();
         sl.Load();
-
-        spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
-        spawner.TrySetSpawnPointID(sl.data.spawnPointID);
     }
 
 
