@@ -9,12 +9,12 @@ public class SnakeHeadDummy : MonoBehaviour
 
 
     void Start() {
-        action = InputSystem.actions.FindAction("MoveDebug");
+        action = InputSystem.actions.FindActionMap("Debug").FindAction("Move");
     }
 
 
     void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, 1f);
+        Gizmos.DrawWireSphere(transform.position, 10f);
     }
 
 
