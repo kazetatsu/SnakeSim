@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class Moderator : MonoBehaviour
 {
-    SaverLoader sl;
+    string fileName = "SaveData.json";
+    SaveData data;
     // Spawn point is a check point s.t. the snake spawn.
-    public int SpawnPointID { get => sl.data.spawnPointID; }
+    public int SpawnPointID { get => data.spawnPointID; }
 
 
     public bool TrySetSpawnPointID(int ID) {
-        if (sl.data.spawnPointID < ID) {
-            sl.data.spawnPointID = ID;
-            sl.Save();
+        if (data.spawnPointID < ID) {
+            data.spawnPointID = ID;
+            SaveDataIO.Write(data, fileName);
             return true;
         }
         return false;
@@ -18,8 +19,7 @@ public class Moderator : MonoBehaviour
 
 
     void Start() {
-        sl = new SaverLoader();
-        sl.Load();
+        data = SaveDataIO.CreateOrRead(fileName);
     }
 
 
