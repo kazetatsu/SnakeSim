@@ -12,7 +12,7 @@ public class Skin : MonoBehaviour
 
 
     public void SetBone(Transform bone) {
-        if (!this.bone)
+        if (this.bone is null)
             transform.GetComponent<MeshRenderer>().enabled = true;
 
         this.bone = bone;
@@ -115,11 +115,14 @@ public class Skin : MonoBehaviour
             this.localFVertIndexs[i] = localFVertIndexs[i].ToArray();
             this.localBVertIndexs[i] = localBVertIndexs[i].ToArray();
         }
+
+        if (bone is not null)
+            SetBone(bone);
     }
 
 
     void Update() {
-        if (!bone) return;
+        if (bone is null) return;
 
         var newVerts = new Vector3[vertsCount];
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class JointsRotater : MonoBehaviour
+public class PhysicalBone : MonoBehaviour
 {
     ConfigurableJoint[] joints;
     public Quaternion[] targetRotations;

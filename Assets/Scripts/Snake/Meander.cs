@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Meander : MonoBehaviour
 {
-    JointsRotater joints;
+    PhysicalBone joints;
     InputAction action;
     float firstJointAng = 0f;
     [SerializeField] float angLimit;
@@ -29,7 +29,7 @@ public class Meander : MonoBehaviour
 
 
     void Start() {
-        joints = this.GetComponent<JointsRotater>();
+        joints = this.GetComponent<PhysicalBone>();
         action = InputSystem.actions.FindAction("Meander");
 
         int count = Snake.JointsCount - 1;
