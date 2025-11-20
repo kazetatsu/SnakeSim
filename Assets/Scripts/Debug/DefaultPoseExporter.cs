@@ -62,18 +62,13 @@ public class DefaultPoseExporter : MonoBehaviour
 
         if (action.IsPressed()) {
             var pose = new Pose();
-            pose.poss = new Vector3[Snake.SegmentsCount];
-            pose.rots = new Quaternion[Snake.SegmentsCount];
-            pose.poss[0] = ps[ps.Length - 1] + 0.5f * Snake.SegmentsDist * Vector3.forward;
-            for (int j = ps.Length - 2; j >= 0; --j) {
-                pose.poss[ps.Length - 1 - j] = (ps[j+1] + ps[j]) * 0.5f;
-                pose.rots[ps.Length - 1 - j] = Quaternion.FromToRotation(Vector3.forward, ps[j+1] - ps[j]);
-            }
+            pose.rotations = new Quaternion[Snake.SegmentsCount];
+            pose.rotations[0] = Quaternion.identity;
+            for (int j = ps.Length - 2; j >= 0; --j)
+                pose.rotations[ps.Length - 1 - j] = Quaternion.FromToRotation(Vector3.forward, ps[j+1] - ps[j]);
             Vector3 u = ps[0];
-            for (int j = ps.Length; j < Snake.SegmentsCount; ++j) {
-                pose.poss[j] = ps[0] - ((float)(j - ps.Length) + 0.5f) * Snake.SegmentsDist * Vector3.forward;
-                pose.rots[j] = Quaternion.identity;
-            }
+            for (int j = ps.Length; j < Snake.SegmentsCount; ++j)
+                pose.rotations[j] = Quaternion.identity;
             PoseIO.Write(pose, "DefaultPose.json");
         }
     }

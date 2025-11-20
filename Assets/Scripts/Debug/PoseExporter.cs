@@ -22,12 +22,9 @@ public class PoseExporter : MonoBehaviour
         if (action.IsPressed()) {
             int n = backs.Length;
             var pose = new Pose();
-            pose.poss = new Vector3[n];
-            pose.rots = new Quaternion[n];
-            for (int i = 0; i < n; ++i) {
-                pose.poss[i] = backs[i].position;
-                pose.rots[i] = backs[i].rotation;
-            }
+            pose.rotations = new Quaternion[n];
+            for (int i = 0; i < n; ++i)
+                pose.rotations[i] = backs[i].rotation;
             PoseIO.Write(pose, fileName);
         }
     }

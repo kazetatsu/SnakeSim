@@ -3,15 +3,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class Pose {
-    public Vector3[] poss;
-    public Quaternion[] rots;
-    public Vector3 offsetPos;
-    public Quaternion offsetRot;
-
-    public Pose() {
-        offsetPos = Vector3.zero;
-        offsetRot = Quaternion.identity;
-    }
+    public Quaternion[] rotations;
 }
 
 
