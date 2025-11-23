@@ -12,21 +12,29 @@ public class SaveData {
 
 
 public static class SaveDataIO {
-    public static SaveData CreateOrRead(string fileName) {
-        string path = Path.Combine(Application.dataPath, fileName);
+    public static string fileName = "SaveData.json";
+
+
+    public static string GetPath() {
+        return Path.Combine(Application.dataPath, fileName);
+    }
+
+
+    public static SaveData Read() {
+        string path = GetPath();
         if (File.Exists(path)) {
             var reader = new StreamReader(path);
             var data = JsonUtility.FromJson<SaveData>(reader.ReadLine());
             reader.Close();
             return data;
         } else {
-            return new SaveData();
+            return null;
         }
     }
 
 
-    public static void Write(SaveData data, string fileName) {
-        string path = Path.Combine(Application.dataPath, fileName);
+    public static void Write(SaveData data) {
+        string path = GetPath();
         var writer = new StreamWriter(path, false);
         writer.WriteLine(JsonUtility.ToJson(data));
         writer.Close();
