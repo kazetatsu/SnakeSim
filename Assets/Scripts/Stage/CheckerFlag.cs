@@ -37,11 +37,11 @@ public class CheckerFlag : MonoBehaviour
         flag = transform.GetChild(0);
         initialPos = flag.localPosition;
         theta = 0f;
-        dthetadt = 2f * Mathf.PI * freq;
     }
 
 
     void Update() {
+        dthetadt = 2f * Mathf.PI * freq;
         theta += dthetadt * Time.deltaTime;
         if (theta > 2f * Mathf.PI)
             theta -= 2f * Mathf.PI;
