@@ -10,8 +10,9 @@ public class Substage : MonoBehaviour
     SunRotater rotater;
 
     Vector3 ankerPos;
-    public Vector3 AnkerPosition { get => ankerPos; }
+    SimpleTrigger trigger;
     [SerializeField] AudioClip music;
+
 
     public void Prioritize() {
         _camera.Prioritize();
@@ -20,15 +21,21 @@ public class Substage : MonoBehaviour
     }
 
 
+    public float GetDistanceFromSnake() {
+        if (trigger is not null && trigger.IsSnakeInside())
+            return 0f;
+        return (ankerPos - Snake.headPos).magnitude;
+    }
+
+
     void Start() {
         ankerPos = transform.GetChild(0).transform.position;
+        trigger = GetComponentInChildren<SimpleTrigger>();
         _camera = GetComponentInChildren<CinemachineCamera>();
         switcher = GameObject.Find("Audio Source").GetComponent<MusicSwitcher>();
         rotater = GameObject.Find("Sun").GetComponent<SunRotater>();
     }
 
 
-    void Update() {
-
-    }
+    void Update() {}
 }

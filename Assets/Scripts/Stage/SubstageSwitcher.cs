@@ -23,7 +23,7 @@ public class SubstageSwitcher : MonoBehaviour
         int nearestNew = 0;
         float dMin = float.PositiveInfinity;
         for (int i = 0; i < substages.Length; ++i) {
-            float d = (substages[i].AnkerPosition - Snake.headPos).magnitude;
+            float d = substages[i].GetDistanceFromSnake();
             if (d < dMin) {
                 nearestNew = i;
                 dMin = d;
