@@ -1,22 +1,30 @@
-Shader "Custom/Cover"
+Shader "Custom/Silhouette"
 {
+    Properties
+    {
+        [MainColor] _SColor("SilhouetteColor", Color) = (1, 1, 1, 1)
+    }
+
     SubShader
     {
-        Tags { "RenderType" = "Opaque"}
+        Tags { "RenderType" = "Opaque" "Queue" = "Geometry+1" }
 
         Pass
         {
-            Colormask 0
+            ZTest Greater
             Stencil {
                 Ref 1
-                Comp Always
-                Pass Replace
+                Comp NotEqual
             }
 
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+                half4 _SColor;
+            CBUFFER_END
 
             float4 vert(float4 i : POSITION) : SV_POSITION
             {
@@ -25,7 +33,7 @@ Shader "Custom/Cover"
 
             half4 frag() : SV_Target
             {
-                return 0;
+                return _SColor;
             }
             ENDHLSL
         }

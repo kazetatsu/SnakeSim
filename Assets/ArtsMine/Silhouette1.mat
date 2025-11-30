@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Silhoette
+  m_Name: Silhouette1
   m_Shader: {fileID: 4800000, guid: cb2f5888c794bb345b9b766fc5c6b69a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
