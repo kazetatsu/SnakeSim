@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class HotFloor : MonoBehaviour {
+public class HotFloor : MonoBehaviour
+{
     int index;
     Heat heat;
 
@@ -9,7 +10,7 @@ public class HotFloor : MonoBehaviour {
         index = transform.GetSiblingIndex();
         heat = transform.parent.GetComponent<Heat>();
     }
-    void Update() { }
+    void Update() {}
 
 
     void OnCollisionEnter(Collision collision) {
