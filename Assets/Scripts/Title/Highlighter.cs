@@ -13,8 +13,9 @@ public class Highlighter : MonoBehaviour, IPointerEnterHandler
     EventSystem eventSystem;
 
     [SerializeField] Color disabledColor;
+    [SerializeField] Color normalColor;
     [SerializeField] Color pressedColor;
-    TextMeshProUGUI text;
+    Image image;
 
 
     public void OnPointerEnter(PointerEventData _) {
@@ -23,8 +24,14 @@ public class Highlighter : MonoBehaviour, IPointerEnterHandler
 
 
     void OnPressed() {
-        text.color = pressedColor;
+        image.color = pressedColor;
         bone.enabled = false;
+        enabled = false;
+    }
+
+
+    void OnEnabled() {
+        image.color = normalColor;
     }
 
 
@@ -32,12 +39,12 @@ public class Highlighter : MonoBehaviour, IPointerEnterHandler
         pose = PoseIO.Read(poseFileName);
         bone = GameObject.Find("SnakePoseBone").GetComponent<PoseBone>();
         eventSystem = EventSystem.current;
-        text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        image = transform.Find("Image").GetComponent<Image>();
 
         Button button = GetComponent<Button>();
         button.onClick.AddListener(OnPressed);
         if (!GetComponent<Button>().interactable)
-            text.color = disabledColor;
+            image.color = disabledColor;
     }
 
 
@@ -47,13 +54,11 @@ public class Highlighter : MonoBehaviour, IPointerEnterHandler
         // Highlight
         if (!selected && currentSelectedObj == gameObject) {
             bone.SetTargetPose(pose);
-            text.fontStyle = FontStyles.Underline;
             selected = true;
         }
 
         // Unhighlight
         if (selected && currentSelectedObj != gameObject) {
-            text.fontStyle = FontStyles.Normal;
             selected = false;
         }
     }

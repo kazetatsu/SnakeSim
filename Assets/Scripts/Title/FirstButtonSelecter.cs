@@ -13,7 +13,7 @@ public class FirstButtonSelecter : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(buttonContinue.gameObject);
         } else {
             buttonContinue.interactable = false;
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("New Game"));
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("NewGame"));
         }
     }
 

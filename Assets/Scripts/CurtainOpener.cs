@@ -1,36 +1,54 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 // Open/Close curtain
-public class CurtainOpener : MonoBehaviour
-{
+public class CurtainOpener : MonoBehaviour {
     [SerializeField] float delay;
-    [SerializeField] float interval;
+    [SerializeField] float duration;
 
-
-    bool isOpening = false;
     float dOpen; // d(open) / dt
     float open;
 
     Curtain curtain;
-    [SerializeField] UnityEvent onTimeout;
+    Action onClosed;
     EventSystem eventSystem;
 
 
     void Open() {
         eventSystem.enabled = false;
-        dOpen = 1f / interval;
+        dOpen = 1f / duration;
         open = -dOpen * delay;
-        isOpening = true;
+        StartCoroutine(OpenClose());
     }
 
 
-    public void Close() {
+    public void Close(float delay, Action onClosed) {
         eventSystem.enabled = false;
-        dOpen = -1f / interval;
-        open = 1f;
-        isOpening = true;
+        dOpen = -1f / duration;
+        open = 1f - dOpen * delay;
+        this.onClosed = onClosed;
+        StartCoroutine(OpenClose());
+    }
+
+
+    IEnumerator OpenClose() {
+        while (true) {
+            yield return null;
+            open += dOpen * Time.deltaTime;
+            curtain.open = open;
+            if (dOpen < 0f && open < 0f) {
+                yield return null;
+                onClosed?.Invoke();
+                break;
+            }
+            if (dOpen > 0f && open > 1f) {
+                eventSystem.enabled = true;
+                break;
+            }
+        }
     }
 
 
@@ -39,22 +57,5 @@ public class CurtainOpener : MonoBehaviour
         eventSystem = EventSystem.current;
         Open();
     }
-
-
-    void Update() {
-        if (!isOpening) return;
-
-        open += dOpen * Time.deltaTime;
-        if (dOpen < 0f && open < 0f) {
-            open = 0f;
-            onTimeout?.Invoke();
-            isOpening = false;
-        }
-        if (dOpen > 0f && open > 1f) {
-            open = 1f;
-            eventSystem.enabled = true;
-            isOpening = false;
-        }
-        curtain.open = open;
-    }
+    void Update() {}
 }
