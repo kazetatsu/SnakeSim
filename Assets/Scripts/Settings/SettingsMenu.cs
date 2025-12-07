@@ -1,0 +1,67 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class SettingsMenu : MonoBehaviour
+{
+    [SerializeField] float durationOpen;
+    GameObject selectedBefore; // Selected gameobject before open settings menu
+    [SerializeField] GameObject firstSelected; // selected gameobject when open settings menu
+
+    RectTransform rectTransform;
+
+
+    IEnumerator ChangeScale(bool open) {
+        // Turn off event system while menu is appearing/hiding
+        var eventSystem = EventSystem.current;
+        eventSystem.enabled = false;
+
+        float fromScale = rectTransform.localScale.x;
+        float toScale = open ? 1f : 0f;
+        Vector3 temp;
+        float ds = -1f / durationOpen;
+        float s = 1f;
+
+        while (true) {
+            yield return null;
+            s += ds * Time.deltaTime;
+            if (s <= 0f) break;
+
+            temp = rectTransform.localScale;
+            temp.x = s * fromScale + (1f - s) * toScale;
+            rectTransform.localScale = temp;
+        }
+
+        temp = rectTransform.localScale;
+        temp.x = toScale;
+        rectTransform.localScale = temp;
+
+        eventSystem.enabled = true;
+        if (open) {
+            eventSystem.SetSelectedGameObject(firstSelected);
+        } else {
+            eventSystem.SetSelectedGameObject(selectedBefore);
+            gameObject.SetActive(false);
+        }
+    }
+
+
+    public void Open() {
+        gameObject.SetActive(true);
+        selectedBefore = EventSystem.current.currentSelectedGameObject;
+        StartCoroutine(ChangeScale(true));
+    }
+
+
+    void Close() {
+        StartCoroutine(ChangeScale(false));
+    }
+
+
+    void Start() {
+        rectTransform = GetComponent<RectTransform>();
+        transform.Find("Close").GetComponent<Button>().onClick.AddListener(Close);
+        gameObject.SetActive(false);
+    }
+}
