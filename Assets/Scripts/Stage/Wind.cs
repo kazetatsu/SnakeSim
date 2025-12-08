@@ -30,7 +30,7 @@ public class Wind : MonoBehaviour
     }
 
 
-    void OntriggerExit(Collider other) {
+    void OnTriggerExit(Collider other) {
         int i = other.transform.parent.parent.GetSiblingIndex(); // index of hit segment
         isSegmentInside[i] = false;
     }
