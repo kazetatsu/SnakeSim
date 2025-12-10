@@ -6,6 +6,7 @@ public class MusicSwitcher : MonoBehaviour
     int areasLength;
     SubstageArea[] areas;
     AudioSource source;
+    AudioScaler scaler;
     bool isSwitching = false;
     float dvoldt; // d volume / dt
     AudioClip nextClip;
@@ -25,18 +26,19 @@ public class MusicSwitcher : MonoBehaviour
             areas[i] = transform.GetChild(i).GetComponent<SubstageArea>();
 
         source = GetComponent<AudioSource>();
+        scaler = GetComponent<AudioScaler>();
     }
 
 
     void Update() {
         if (!isSwitching) return;
 
-        source.volume += dvoldt * Time.deltaTime;
+        scaler.TempVolume += dvoldt * Time.deltaTime;
 
-        if (dvoldt > 0f && source.volume >= 1f)
+        if (dvoldt > 0f && scaler.TempVolume >= 1f)
             isSwitching = false;
 
-        if (dvoldt < 0f && source.volume <= 0f) {
+        if (dvoldt < 0f && scaler.TempVolume <= 0f) {
             if (nextClip is null) {
                 source.Stop();
                 isSwitching = false;

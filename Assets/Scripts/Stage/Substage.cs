@@ -32,10 +32,7 @@ public class Substage : MonoBehaviour
         ankerPos = transform.GetChild(0).transform.position;
         trigger = GetComponentInChildren<SimpleTrigger>();
         _camera = GetComponentInChildren<CinemachineCamera>();
-        switcher = GameObject.Find("Audio Source").GetComponent<MusicSwitcher>();
+        switcher = GameObject.Find("MusicSource").GetComponent<MusicSwitcher>();
         rotater = GameObject.Find("Sun").GetComponent<SunRotater>();
     }
-
-
-    void Update() {}
 }

@@ -1981,6 +1981,7 @@ MonoBehaviour:
   - {fileID: 570374291}
   - {fileID: 999499170}
   - {fileID: 248758104}
+  intervalSpawn: 0.2
 --- !u!4 &719495951
 Transform:
   m_ObjectHideFlags: 0
@@ -2252,7 +2253,7 @@ GameObject:
   - component: {fileID: 840296736}
   - component: {fileID: 840296733}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: MusicSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2813,8 +2814,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944059492}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.017376082, y: 0.9761958, z: -0.19860922, w: 0.08540619}
-  m_LocalPosition: {x: -51.6, y: 23.34, z: 45.2}
+  m_LocalRotation: {x: 0.27781588, y: -0.36497167, z: 0.1150751, w: 0.8811196}
+  m_LocalPosition: {x: -8.599998, y: 48.34, z: -29.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3636,26 +3637,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1202085341}
-  - component: {fileID: 1202085340}
+  - component: {fileID: 1202085342}
   m_Layer: 0
-  m_Name: Debug
+  m_Name: ForceSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1202085340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202085339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e620a98f2eb68824ca88360c885d9590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MyDebug
 --- !u!4 &1202085341
 Transform:
   m_ObjectHideFlags: 0
@@ -3665,12 +3654,24 @@ Transform:
   m_GameObject: {fileID: 1202085339}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -59.03531, y: -2.4, z: -18.42815}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1202085342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202085339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 063c700bba903004f8e9241162d12f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ForceSpawner
 --- !u!1 &1265427601
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,16 +5940,17 @@ SceneRoots:
   - {fileID: 418277114}
   - {fileID: 365684624}
   - {fileID: 267326635}
+  - {fileID: 1280107198}
   - {fileID: 719495951}
+  - {fileID: 1202085341}
+  - {fileID: 1009028747}
+  - {fileID: 840296734}
   - {fileID: 2122017404}
   - {fileID: 5227493558906105689}
   - {fileID: 1173229045}
   - {fileID: 2071103158}
   - {fileID: 260235941}
   - {fileID: 1477381610}
-  - {fileID: 840296734}
-  - {fileID: 1280107198}
-  - {fileID: 1202085341}
   - {fileID: 1065980351}
   - {fileID: 1265427602}
   - {fileID: 675966758}
@@ -5961,4 +5963,3 @@ SceneRoots:
   - {fileID: 449168786}
   - {fileID: 1924370778}
   - {fileID: 1062502435}
-  - {fileID: 1009028747}
