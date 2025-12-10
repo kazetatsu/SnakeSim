@@ -8,7 +8,17 @@ public class HandleToggle : MonoBehaviour
     [SerializeField] Vector2 leftPosition;
     [SerializeField] Vector2 rightPosition;
     RectTransform handle;
-    public bool isHandleOnLeft;
+    bool isHandleOnLeft;
+    public bool IsHandleOnLeft {
+        get => isHandleOnLeft;
+        set {
+            if (value)
+                handle.anchoredPosition = leftPosition;
+            else
+                handle.anchoredPosition = rightPosition;
+            isHandleOnLeft = value;
+        }
+    }
 
 
     IEnumerator MoveHandle(Vector2 toPosition) {
@@ -18,7 +28,7 @@ public class HandleToggle : MonoBehaviour
 
         while(true) {
             yield return null;
-            s += ds * Time.deltaTime;
+            s += ds * Time.unscaledDeltaTime;
             if (s <= 0f) break;
 
             handle.anchoredPosition = s * fromPosition + (1f - s) * toPosition;

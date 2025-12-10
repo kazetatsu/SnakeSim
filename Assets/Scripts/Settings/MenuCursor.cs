@@ -16,7 +16,7 @@ public class MenuCursor : MonoBehaviour
 
         while (true) {
             yield return null;
-            s += ds * Time.deltaTime;
+            s += ds * Time.unscaledDeltaTime;
             if (s <= 0f) break;
 
             temp = rectTransform.anchoredPosition;

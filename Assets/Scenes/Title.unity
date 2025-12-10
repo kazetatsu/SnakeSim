@@ -1140,7 +1140,6 @@ MonoBehaviour:
   durationHandleMove: 0.1
   leftPosition: {x: -55, y: 0}
   rightPosition: {x: 55, y: 0}
-  isHandleOnLeft: 0
 --- !u!222 &1004099333
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1655,6 +1654,10 @@ PrefabInstance:
       propertyPath: fileName
       value: PoseSettings.json
       objectReference: {fileID: 0}
+    - target: {fileID: 926284534973336040, guid: f72185868c92b69489dca2ec7745ebf8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2622139844405590947, guid: f72185868c92b69489dca2ec7745ebf8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1902,9 +1905,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.08830276
+    x: 0.056797028
     y: 0
-    width: 0.8233945
+    width: 0.88640594
     height: 1
   near clip plane: 4
   far clip plane: 1000

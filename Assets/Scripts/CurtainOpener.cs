@@ -37,7 +37,7 @@ public class CurtainOpener : MonoBehaviour {
     IEnumerator OpenClose() {
         while (true) {
             yield return null;
-            open += dOpen * Time.deltaTime;
+            open += dOpen * Time.unscaledDeltaTime;
             curtain.open = open;
             if (dOpen < 0f && open < 0f) {
                 yield return null;

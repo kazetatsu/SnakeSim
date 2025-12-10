@@ -35,7 +35,7 @@ public class PoseBone : MonoBehaviour
     void Update() {
         if (!isMoving) return;
 
-        timer += Time.deltaTime;
+        timer += Time.unscaledDeltaTime;
 
         if (timer >= timeMove) {
             for (int i = 0; i < Snake.SegmentsCount; ++i)

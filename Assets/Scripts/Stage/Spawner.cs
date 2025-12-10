@@ -58,7 +58,7 @@ public class Spawner : MonoBehaviour
         if (timer > 0f)
             timer -= Time.deltaTime;
 
-        if (action.IsPressed())
+        if (Time.timeScale > 0f && action.IsPressed())
             Spawn();
     }
 

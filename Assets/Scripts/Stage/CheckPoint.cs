@@ -17,7 +17,10 @@ public class CheckPoint : MonoBehaviour
         _collider = GetComponent<Collider>();
 
         if (ID <= moderator.SpawnPointID) {
-            flag.RaiseFlagImmediately();
+            flag?.RaiseFlagImmediately();
+            Transform confetti = transform.Find("Confetti");
+            if (confetti is not null)
+                Destroy(confetti.gameObject);
             Destroy(_collider);
             Destroy(this);
         }
@@ -25,6 +28,7 @@ public class CheckPoint : MonoBehaviour
 
 
     void OnTriggerEnter(Collider _) {
+        transform.Find("Confetti")?.GetComponent<ParticleSystem>().Play();
         if (moderator.TrySetSpawnPointID(ID)) {
             spawner.SetSpawnPoint(ID);
             flag.RaiseFlagGradually();

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Curtain : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Curtain : MonoBehaviour
 
 
     void Start() {
-        var canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+        var rect = GetComponent<RectTransform>().rect;
 
         var partsPlaced = new bool[separate,separate];
         for (int r = 0; r < separate; ++r)
@@ -23,8 +24,8 @@ public class Curtain : MonoBehaviour
         int y = separate / 2;
         int dx = 0;
         int dy = -1;
-        float w = canvasRect.width  / (float)separate;
-        float h = canvasRect.height / (float)separate;
+        float w = 1.01f * rect.width  / (float)separate;
+        float h = 1.01f * rect.height / (float)separate;
 
         parts = new GameObject[n];
         parts[0] = transform.Find("Part 00").gameObject;

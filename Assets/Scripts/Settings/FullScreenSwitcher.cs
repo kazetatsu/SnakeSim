@@ -10,5 +10,6 @@ public class FullScreenSwitcher : MonoBehaviour
 
     void Start() {
         GetComponent<Button>().onClick.AddListener(OnButtonPressed);
+        GetComponent<HandleToggle>().IsHandleOnLeft = !Screen.fullScreen;
     }
 }

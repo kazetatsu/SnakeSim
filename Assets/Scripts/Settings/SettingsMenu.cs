@@ -25,7 +25,7 @@ public class SettingsMenu : MonoBehaviour
 
         while (true) {
             yield return null;
-            s += ds * Time.deltaTime;
+            s += ds * Time.unscaledDeltaTime;
             if (s <= 0f) break;
 
             temp = rectTransform.localScale;
@@ -49,7 +49,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void Open() {
         gameObject.SetActive(true);
-        selectedBefore = EventSystem.current.currentSelectedGameObject;
+        selectedBefore = EventSystem.current?.currentSelectedGameObject;
         StartCoroutine(ChangeScale(true));
     }
 
@@ -61,6 +61,9 @@ public class SettingsMenu : MonoBehaviour
 
     void Start() {
         rectTransform = GetComponent<RectTransform>();
+        Vector2 temp = rectTransform.localScale;
+        temp.x = 0f;
+        rectTransform.localScale = temp;
         transform.Find("Close").GetComponent<Button>().onClick.AddListener(Close);
         gameObject.SetActive(false);
     }
