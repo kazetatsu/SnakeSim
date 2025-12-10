@@ -876,7 +876,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wind
   pushForce: {x: 0, y: 0, z: -1.2}
-  isSegmentInside: 
 --- !u!1001 &347292547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2250,6 +2249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 840296734}
   - component: {fileID: 840296735}
+  - component: {fileID: 840296736}
   - component: {fileID: 840296733}
   m_Layer: 0
   m_Name: Audio Source
@@ -2382,6 +2382,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &840296736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840296732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2361e136f769e4eb762da22dcf2110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioScaler
+  audioName: Music
 --- !u!1001 &843888769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2768,9 +2781,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.11979166
+    x: 0.08830276
     y: 0
-    width: 0.7604167
+    width: 0.8233945
     height: 1
   near clip plane: 3
   far clip plane: 600
