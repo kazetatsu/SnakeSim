@@ -1,0 +1,6 @@
+BGMはクラシック名曲サウンドライブラリー様よりダウンロードしました。
+このフォルダの音楽データはそれぞれ下記サイトよりダウンロードし、当方がモノラルに変換したものです。
+music_haru.mp3 :http://classical-sound.seesaa.net/article/267059039.html
+music_natsu.mp3:http://classical-sound.seesaa.net/article/473223982.html
+music_aki.mp3  :http://classical-sound.seesaa.net/article/232892379.html
+music_fuyu.mp3 :http://classical-sound.seesaa.net/article/467800354.html

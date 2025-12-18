@@ -5,6 +5,8 @@ public class AudioScaler : MonoBehaviour
 {
     [SerializeField] string audioName;
     AudioSource _audio;
+
+    [SerializeField] float initialVolume;
     float defaultVolume;
     public float DefaultVolume {
         get => defaultVolume;
@@ -24,7 +26,7 @@ public class AudioScaler : MonoBehaviour
 
     void Start() {
         _audio = GetComponent<AudioSource>();
-        defaultVolume = PlayerPrefs.GetFloat(audioName + "Volume", 0.5f);
+        defaultVolume = PlayerPrefs.GetFloat(audioName + "Volume", initialVolume);
         SceneManager.sceneUnloaded += SaveDefaultVolume;
     }
 
