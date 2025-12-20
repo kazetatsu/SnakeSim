@@ -75,3 +75,7 @@ crashlytics-build.properties
 
 .vscode/
 Assets/SaveData.json*
+Assets/Recordings.meta
+Assets/Recordings/
+Assets/Capture.meta
+Assets/Capture/
