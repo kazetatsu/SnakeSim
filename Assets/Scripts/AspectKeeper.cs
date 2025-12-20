@@ -7,6 +7,7 @@ public class AspectKeeper : MonoBehaviour
 
 
     void Start() {
+        Application.targetFrameRate = 60;
         _camera = GetComponent<Camera>();
     }
 
