@@ -12,12 +12,21 @@ public class Substage : MonoBehaviour
     Vector3 ankerPos;
     SimpleTrigger trigger;
     [SerializeField] AudioClip music;
+    [SerializeField] GameObject[] omittableObjs;
 
 
     public void Prioritize() {
         _camera.Prioritize();
         switcher.Switch(music);
         rotater.RotateSun(index);
+        foreach (GameObject obj in omittableObjs)
+            obj.SetActive(true);
+    }
+
+
+    public void Deprioritize() {
+        foreach (GameObject obj in omittableObjs)
+            obj.SetActive(false);
     }
 
 

@@ -14,9 +14,13 @@ public class SubstageSwitcher : MonoBehaviour
         var substageObjs = GameObject.FindGameObjectsWithTag("Substage");
         int n = substageObjs.Length;
         substages = new Substage[n];
-        for (int i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i) {
             substages[i] = substageObjs[i].GetComponent<Substage>();
-        substages[priorID].Prioritize();
+            if (i == priorID)
+                substages[i].Prioritize();
+            else
+                substages[i].Deprioritize();
+        }
     }
 
     void Update() {
@@ -39,6 +43,7 @@ public class SubstageSwitcher : MonoBehaviour
                 timeTillSwitch = SwitchDelay;
             nearestID = nearestNew;
             if (timeTillSwitch <= 0f) {
+                substages[priorID].Deprioritize();
                 priorID = nearestID;
                 substages[priorID].Prioritize();
             }
