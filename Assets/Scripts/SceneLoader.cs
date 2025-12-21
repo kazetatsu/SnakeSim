@@ -21,7 +21,7 @@ public class SceneLoader : MonoBehaviour
 
 
     public void ToStageNewGame() {
-        SaveDataIO.Write(new SaveData());
+        SaveData.SpawnPointID = 0;
         LoadWithCurtain(0f, "Stage");
     }
 

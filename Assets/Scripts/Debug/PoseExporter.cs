@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,3 +30,4 @@ public class PoseExporter : MonoBehaviour
         }
     }
 }
+#endif

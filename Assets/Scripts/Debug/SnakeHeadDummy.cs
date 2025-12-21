@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,3 +26,5 @@ public class SnakeHeadDummy : MonoBehaviour
         Snake.headPos = transform.position;
     }
 }
+
+#endif

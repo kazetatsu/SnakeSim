@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,7 +7,7 @@ public class FirstButtonSelecter : MonoBehaviour
     void Start() {
         Button buttonContinue = GameObject.Find("Continue").GetComponent<Button>();
 
-        if (File.Exists(SaveDataIO.GetPath())) {
+        if (SaveData.HasProgress()) {
             buttonContinue.interactable = true;
             EventSystem.current.SetSelectedGameObject(buttonContinue.gameObject);
         } else {
@@ -16,7 +15,4 @@ public class FirstButtonSelecter : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(GameObject.Find("NewGame"));
         }
     }
-
-
-    void Update() {}
 }

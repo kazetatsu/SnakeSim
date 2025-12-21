@@ -46,9 +46,7 @@ public class Spawner : MonoBehaviour
 
     void Start() {
         skin = GameObject.Find("SnakeSkin").GetComponent<Skin>();
-        var moderator = GameObject.Find("Moderator")?.GetComponent<Moderator>();
-        if (moderator is not null)
-            spawnIndex = moderator.SpawnPointID;
+        spawnIndex = SaveData.SpawnPointID;
         action = InputSystem.actions.FindAction("Spawn");
         Spawn();
     }
