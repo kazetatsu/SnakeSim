@@ -4,7 +4,6 @@ public class MusicSwitcher : MonoBehaviour
 {
     const float FadeTime = 0.7f;
     int areasLength;
-    SubstageArea[] areas;
     AudioSource source;
     AudioScaler scaler;
     bool isSwitching = false;
@@ -20,11 +19,6 @@ public class MusicSwitcher : MonoBehaviour
 
 
     void Start() {
-        areasLength = transform.childCount;
-        areas = new SubstageArea[areasLength];
-        for (int i = 0; i < areasLength; ++i)
-            areas[i] = transform.GetChild(i).GetComponent<SubstageArea>();
-
         source = GetComponent<AudioSource>();
         scaler = GetComponent<AudioScaler>();
     }
