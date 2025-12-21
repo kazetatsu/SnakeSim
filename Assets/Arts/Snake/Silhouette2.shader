@@ -1,8 +1,8 @@
-Shader "Custom/Silhouette"
+Shader "Custom/Silhouette2"
 {
     SubShader
     {
-        Tags { "RenderType" = "Opaque" "Queue" = "Geometry" }
+        Tags { "RenderType" = "Opaque" "Queue" = "Geometry+1" }
 
         Pass
         {

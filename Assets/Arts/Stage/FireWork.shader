@@ -6,6 +6,13 @@ Shader "Custom/FireWork"
 
         Pass
         {
+            Stencil {
+                Ref 1
+                Comp Always
+                Pass Replace
+            }
+            Cull Off
+
             HLSLPROGRAM
 
             #pragma vertex vert
