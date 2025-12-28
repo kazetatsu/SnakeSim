@@ -6,6 +6,7 @@ public class ScreenShot : MonoBehaviour
 {
     InputAction action;
     int cnt = 0;
+    [SerializeField] int scaler;
 
 
     string pngPath(int i) {
@@ -20,7 +21,7 @@ public class ScreenShot : MonoBehaviour
 
     void Update() {
         if (action.IsPressed()) {
-            ScreenCapture.CaptureScreenshot(pngPath(0), 2);
+            ScreenCapture.CaptureScreenshot(pngPath(0), scaler);
             ++cnt;
         }
     }

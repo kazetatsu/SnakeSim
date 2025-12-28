@@ -26306,6 +26306,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77cc347f5fca3c44d81196be75133a2b, type: 3}
+--- !u!114 &2086476221 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3113178532512969510, guid: 77cc347f5fca3c44d81196be75133a2b, type: 3}
+  m_PrefabInstance: {fileID: 2080095122}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2361e136f769e4eb762da22dcf2110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioScaler
 --- !u!1001 &7959087251481700938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26406,6 +26417,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9077738815958286075, guid: 308138159df44ca46ba24b14ea0f3016, type: 3}
+      propertyPath: audioScaler
+      value: 
+      objectReference: {fileID: 2086476221}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

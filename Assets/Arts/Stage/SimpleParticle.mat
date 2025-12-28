@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FireWork
+  m_Name: SimpleParticle
   m_Shader: {fileID: 4800000, guid: 5277fae698e103f459efc5b460878efd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

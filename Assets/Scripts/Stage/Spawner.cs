@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] float intervalSpawn;
     float timer = 0f;
+    [SerializeField] bool useSavedata = true;
 
 
     public int GetCheckPointID(Transform t) {
@@ -46,7 +47,10 @@ public class Spawner : MonoBehaviour
 
     void Start() {
         skin = GameObject.Find("SnakeSkin").GetComponent<Skin>();
-        spawnIndex = SaveData.SpawnPointID;
+        if (useSavedata)
+            spawnIndex = SaveData.SpawnPointID;
+        else
+            spawnIndex = 0;
         action = InputSystem.actions.FindAction("Spawn");
         Spawn();
     }
