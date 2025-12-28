@@ -167,6 +167,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1383091668337120491, guid: c9daa36dc552743e6ad98269650c6945, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383091668337120491, guid: c9daa36dc552743e6ad98269650c6945, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 037592be8f352c74c90cd8efb976f9ec, type: 2}
+    - target: {fileID: 1383091668337120491, guid: c9daa36dc552743e6ad98269650c6945, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 037592be8f352c74c90cd8efb976f9ec, type: 2}
+    - target: {fileID: 1383091668337120491, guid: c9daa36dc552743e6ad98269650c6945, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 037592be8f352c74c90cd8efb976f9ec, type: 2}
     - target: {fileID: 4506199691163354478, guid: c9daa36dc552743e6ad98269650c6945, type: 3}
       propertyPath: bone
       value: 
@@ -421,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd5f39648fb00f41ab3823afc5c668a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenShot
+  scaler: 0
 --- !u!4 &1242093824
 Transform:
   m_ObjectHideFlags: 0
@@ -580,6 +597,7 @@ MonoBehaviour:
   checkPoints:
   - {fileID: 558975968}
   intervalSpawn: 1
+  useSavedata: 0
 --- !u!4 &1307670216
 Transform:
   m_ObjectHideFlags: 0
@@ -777,9 +795,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.045542628
     y: 0
-    width: 1
+    width: 0.90891474
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
