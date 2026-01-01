@@ -1,6 +1,8 @@
+// SPDX-FileCopyrightText: 2025 Shinagwa Kazemaru
+// SPDX-License-Identifier: BSD-2-Clause license
+
 using UnityEngine;
 #if UNITY_EDITOR
-using System;
 using System.IO;
 
 [System.Serializable]

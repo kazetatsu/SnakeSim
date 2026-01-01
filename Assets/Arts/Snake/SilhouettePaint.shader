@@ -1,4 +1,7 @@
-Shader "Custom/Silhouette1"
+// SPDX-FileCopyrightText: 2025 Shinagwa Kazemaru
+// SPDX-License-Identifier: BSD-2-Clause license
+
+Shader "Custom/SilhouettePaint"
 {
     Properties
     {

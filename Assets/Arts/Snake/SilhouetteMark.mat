@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Silhouette2
+  m_Name: SilhouetteMark
   m_Shader: {fileID: 4800000, guid: 9adb8995bae4e2d4ca2f4b882c44b321, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

@@ -1,9 +1,11 @@
+// SPDX-FileCopyrightText: 2025 Shinagwa Kazemaru
+// SPDX-License-Identifier: BSD-2-Clause license
+
 using UnityEngine;
 
 public class MusicSwitcher : MonoBehaviour
 {
     const float FadeTime = 0.7f;
-    int areasLength;
     AudioSource source;
     AudioScaler scaler;
     bool isSwitching = false;

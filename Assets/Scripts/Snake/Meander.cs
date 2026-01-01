@@ -1,6 +1,7 @@
-using System.Collections;
+// SPDX-FileCopyrightText: 2025 Shinagwa Kazemaru
+// SPDX-License-Identifier: BSD-2-Clause license
+
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
