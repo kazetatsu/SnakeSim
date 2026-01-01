@@ -227,6 +227,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Check Point
       objectReference: {fileID: 0}
+    - target: {fileID: 1925693180207846465, guid: 93a23f9029c650f42be437184a5822db, type: 3}
+      propertyPath: m_Size.x
+      value: 10.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1925693180207846465, guid: 93a23f9029c650f42be437184a5822db, type: 3}
+      propertyPath: m_Size.z
+      value: 25.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3557654741530186283, guid: 93a23f9029c650f42be437184a5822db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
