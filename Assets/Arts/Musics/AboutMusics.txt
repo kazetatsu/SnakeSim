@@ -1,0 +1,10 @@
+BGMはクラシック名曲サウンドライブラリーさまよりお借りしています。
+このフォルダの音楽データはそれぞれ下記サイトよりダウンロードし、当方がモノラルに変換したものです。
+MusicTitle.mp4   ：http://classical-sound.seesaa.net/article/440330564.html
+MusicTutorial.mp4：http://classical-sound.seesaa.net/article/472914358.html
+MusicHaru.mp3    ：http://classical-sound.seesaa.net/article/267059039.html
+MusicNatsu.mp3   ：http://classical-sound.seesaa.net/article/473223982.html
+MusicAki.mp3     ：http://classical-sound.seesaa.net/article/232892379.html
+MusicFuyu.mp3    ：http://classical-sound.seesaa.net/article/467800354.html
+MusicGoal.mp4    ：http://classical-sound.seesaa.net/article/174375348.html
+利用規約（URL：）に従って利用しています。

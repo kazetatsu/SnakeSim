@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 2574787881362144313}
   - component: {fileID: 2120917760177831616}
   m_Layer: 5
-  m_Name: SettingsMenuFewApp
+  m_Name: SettingsMenuFew
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
